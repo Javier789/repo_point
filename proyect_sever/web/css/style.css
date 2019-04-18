@@ -1,0 +1,82 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 17-abr-2019, 15:06:52
+    Author     : campofacil
+*/
+
+/** CSS Variables **/
+:root {
+  --color-primary: #801e7e;
+  --color-primary-rgb: 128,30,126;
+  --color-primary-contrast: #ffffff;
+  --color-primary-contrast-rgb: 255,255,255;
+  --color-primary-shade: #551c88;
+  --color-primary-tint: #73558d;
+
+  --color-secondary: #1ab9db;
+  --color-secondary-rgb: 26,185,219;
+  --color-secondary-contrast: #000000;
+  --color-secondary-contrast-rgb: 0,0,0;
+  --color-secondary-shade: #17a3c1;
+  --color-secondary-tint: #31c0df;
+
+  --color-tertiary: #d5a70b;
+  --color-tertiary-rgb: 213,167,11;
+  --color-tertiary-contrast: #000000;
+  --color-tertiary-contrast-rgb: 0,0,0;
+  --color-tertiary-shade: #bb930a;
+  --color-tertiary-tint: #d9b023;
+
+  --color-success: #10dc60;
+  --color-success-rgb: 16,220,96;
+  --color-success-contrast: #ffffff;
+  --color-success-contrast-rgb: 255,255,255;
+  --color-success-shade: #0ec254;
+  --color-success-tint: #28e070;
+
+  --color-warning: #ffce00;
+  --color-warning-rgb: 255,206,0;
+  --color-warning-contrast: #ffffff;
+  --color-warning-contrast-rgb: 255,255,255;
+  --color-warning-shade: #e0b500;
+  --color-warning-tint: #ffd31a;
+
+  --color-danger: #f04141;
+  --color-danger-rgb: 245,61,61;
+  --color-danger-contrast: #ffffff;
+  --color-danger-contrast-rgb: 255,255,255;
+  --color-danger-shade: #d33939;
+  --color-danger-tint: #f25454;
+
+  --color-dark: #222428;
+  --color-dark-rgb: 34,34,34;
+  --color-dark-contrast: #ffffff;
+  --color-dark-contrast-rgb: 255,255,255;
+  --color-dark-shade: #1e2023;
+  --color-dark-tint: #383a3e;
+
+  --color-medium: #989aa2;
+  --color-medium-rgb: 152,154,162;
+  --color-medium-contrast: #ffffff;
+  --color-medium-contrast-rgb: 255,255,255;
+  --color-medium-shade: #86888f;
+  --color-medium-tint: #a2a4ab;
+
+  --color-light: #f4f5f8;
+  --color-light-rgb: 244,244,244;
+  --color-light-contrast: #000000;
+  --color-light-contrast-rgb: 0,0,0;
+  --color-light-shade: #d7d8da;
+  --color-light-tint: #f5f6f9;
+
+   /* Set the background of the entire app */
+   --background-color: #fff;
+  /* Set the font family of the entire app */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Varela Round', "Helvetica Neue", "Roboto", sans-serif;
+
+
+}
