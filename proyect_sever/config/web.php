@@ -8,7 +8,12 @@ $config = [
     'basePath' => dirname(__DIR__),
     'language' => 'es',
     'name' => 'Point Accesorios',
-    'bootstrap' => ['log'],
+    'bootstrap' => ['gii'],
+    'modules' => [
+        'gii' => [
+            'class' => 'yii\gii\Module',
+        ],
+        ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
