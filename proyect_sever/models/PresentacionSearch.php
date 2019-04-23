@@ -18,10 +18,7 @@ class PresentacionSearch extends Presentacion
     public function rules()
     {
         return [
-            [['codigoProducto', 'idProducto', 'idMarca'], 'integer'],
-            [['costo', 'precioSugerido', 'ganancia'], 'number'],
-            [['descripcion', 'nombre'], 'safe'],
-            [['txtSearch'], 'string', 'max' => 30],
+            [['txtSearch'], 'string', 'max' => 30]
         ];
     }
 
@@ -44,7 +41,7 @@ class PresentacionSearch extends Presentacion
     public function search($params)
     {
         $query = Presentacion::find();
-
+        
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -60,17 +57,21 @@ class PresentacionSearch extends Presentacion
         }
 
         // grid filtering conditions
-        $query->andFilterWhere([
+        /*$query->andFilterWhere([
             'codigoProducto' => $this->codigoProducto,
             'costo' => $this->costo,
             'precioSugerido' => $this->precioSugerido,
             'ganancia' => $this->ganancia,
             'idProducto' => $this->idProducto,
             'idMarca' => $this->idMarca
-        ]);
-
-        $query->andFilterWhere(['like', 'descripcion', $this->descripcion])
-            ->andFilterWhere(['like', 'foto', $this->foto]);
+        ]);*/
+        $query->join('LEFT JOIN', 'productos', 'presentaciones.idProducto = productos.id');
+        $query  ->andFilterWhere(
+                ['or',
+                ['like', 'productos.nombre', '%'.$this->txtSearch.'%'],
+                ['like', 'codigoProducto', '%'.$this->txtSearch.'%'],
+                ['like', 'descripcion', '%'.$this->txtSearch.'%'],
+                ]);
 
         return $dataProvider;
     }
