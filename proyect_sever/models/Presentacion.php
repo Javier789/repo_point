@@ -8,13 +8,14 @@ use Yii;
  * This is the model class for table "Presentaciones".
  *
  * @property int $codigoProducto
- * @property double $costoXUntidad
+ * @property double $costo
  * @property string $descripcion
  * @property string $foto
- * @property double $porcentajeRecargo
- * @property double $valorRecargo
+ * @property double $precioSugerido
+ * @property double $ganancia
  * @property int $idProducto
  * @property int $idMarca
+ * @property int $activo
  *
  * @property DetallesComporbante $detallesComporbante
  * @property Marca $marca
@@ -37,9 +38,9 @@ class Presentacion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigoProducto', 'costoXUntidad', 'descripcion', 'idProducto', 'idMarca'], 'required'],
-            [['codigoProducto', 'idProducto', 'idMarca'], 'integer'],
-            [['costoXUntidad', 'porcentajeRecargo', 'valorRecargo'], 'number'],
+            [['codigoProducto', 'costo', 'descripcion', 'idProducto', 'idMarca'], 'required'],
+            [['codigoProducto', 'idProducto', 'idMarca', 'activo'], 'integer'],
+            [['costo', 'precioSugerido', 'ganancia'], 'number'],
             [['foto'], 'string'],
             [['descripcion'], 'string', 'max' => 200],
             [['codigoProducto', 'idMarca'], 'unique', 'targetAttribute' => ['codigoProducto', 'idMarca']],
@@ -55,13 +56,14 @@ class Presentacion extends \yii\db\ActiveRecord
     {
         return [
             'codigoProducto' => 'Codigo Producto',
-            'costoXUntidad' => 'Costo X Untidad',
+            'costo' => 'Costo',
             'descripcion' => 'Descripcion',
             'foto' => 'Foto',
-            'porcentajeRecargo' => 'Porcentaje Recargo',
-            'valorRecargo' => 'Valor Recargo',
+            'precioSugerido' => 'Precio Sugerido',
+            'ganancia' => 'Ganancia',
             'idProducto' => 'Id Producto',
             'idMarca' => 'Id Marca',
+            'activo' => 'Activo',
         ];
     }
 

@@ -11,6 +11,7 @@ use app\models\Presentacion;
  */
 class PresentacionSearch extends Presentacion
 {
+    public $txtSearch;
     /**
      * {@inheritdoc}
      */
@@ -18,8 +19,9 @@ class PresentacionSearch extends Presentacion
     {
         return [
             [['codigoProducto', 'idProducto', 'idMarca'], 'integer'],
-            [['costoXUntidad', 'porcentajeRecargo', 'valorRecargo'], 'number'],
-            [['descripcion', 'foto'], 'safe'],
+            [['costo', 'precioSugerido', 'ganancia'], 'number'],
+            [['descripcion', 'nombre'], 'safe'],
+            [['txtSearch'], 'string', 'max' => 30],
         ];
     }
 
@@ -60,11 +62,11 @@ class PresentacionSearch extends Presentacion
         // grid filtering conditions
         $query->andFilterWhere([
             'codigoProducto' => $this->codigoProducto,
-            'costoXUntidad' => $this->costoXUntidad,
-            'porcentajeRecargo' => $this->porcentajeRecargo,
-            'valorRecargo' => $this->valorRecargo,
+            'costo' => $this->costo,
+            'precioSugerido' => $this->precioSugerido,
+            'ganancia' => $this->ganancia,
             'idProducto' => $this->idProducto,
-            'idMarca' => $this->idMarca,
+            'idMarca' => $this->idMarca
         ]);
 
         $query->andFilterWhere(['like', 'descripcion', $this->descripcion])
