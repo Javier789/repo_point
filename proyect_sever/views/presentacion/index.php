@@ -22,38 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Presentacion', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-           // ['class' => 'yii\grid\SerialColumn'],
-            'codigoProducto',[
-                'attribute' => 'foto',
-                'format' => ['image',['width'=>'200','height'=>'200']],
-                'label' => 'Image',
-                'contentOptions'=>['style'=>'width:200px']
-                            
-             ],
-            ['attribute' => 'producto.nombre',
-                         'label'=>'Nombre',
-                'headerOptions' => ['style' => 'width:20%'],
-            ],
-            'descripcion',
-            'costo',
-            'ganancia',
-            'precioSugerido',
-            
-            
-            //'idMarca',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
-
 </div>
 
 
@@ -95,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <!-- -------------------------- ------------------------------------------ -->
      <?= ListView::widget([
-    'dataProvider' => $dataProvider,//$modPedidos,
+    'dataProvider' => $dataProvider,
     'itemView' => function ($model, $key, $index, $widget) {
         return $this->render('_list_item_pedido',['model' => $model,'findText'=>'Al']);
     },
