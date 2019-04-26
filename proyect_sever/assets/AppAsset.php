@@ -20,9 +20,10 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/style.css',
+        'css/theme.css',
         'css/site.css',
-        '//fonts.googleapis.com/css?family=Varela+Round'
+        '//fonts.googleapis.com/css?family=Varela+Round',
+        '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
         
     ];
     public $js = [

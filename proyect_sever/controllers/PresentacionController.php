@@ -8,6 +8,7 @@ use app\models\PresentacionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * PresentacionController implements the CRUD actions for Presentacion model.
@@ -68,7 +69,12 @@ class PresentacionController extends Controller
         $model = new Presentacion();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
+             $file = UploadedFile::getInstance($model,'foto');
+             var_dump($file->name);
+             var_dump($file);
+            var_dump($_FILES);
+            var_dump(file_get_contents($file->tempName));
+            //return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
         }
 
         return $this->render('create', [

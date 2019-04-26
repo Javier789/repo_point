@@ -80,3 +80,140 @@ and open the template in the editor.
 
 
 }
+
+
+/**-----------------------Barra de navegación-------------------------**/
+.navbar-toggle {
+    position: relative;
+    float: right;
+    padding: 9px 10px;
+    margin-right: 15px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.navbar-inverse{
+    background-color: var(--color-primary);
+    border-color: var(--color-light);
+    height: 75px;
+}
+.navbar-inverse .container{
+    padding: 10px;
+}
+.navbar-inverse .navbar-brand {
+    color: #f4f5f8;
+    padding: 0px 30px;
+}
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+    color: var(--color-primary);
+    background-color: var(--color-light);
+}
+
+.navbar-inverse .navbar-toggle {
+    border-color: var(--color-light);
+}
+
+.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+    background-color: rgba(var(--color-primary-rgb), 0.76);
+   
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #f4f5f8;
+    background-color:rgba(var(--color-primary-rgb), 0.70);
+}
+.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+    color: #f4f5f8;
+    background-color: rgba(var(--color-secondary-rgb), 0.76);
+}
+
+.breadcrumb {
+    padding: 8px 15px;
+    margin: 15px 5px;
+    list-style: none;
+    background-color: var(--color-primary);
+    border-radius: 4px;
+    font-size: 16px;
+}
+.breadcrumb > .active {
+    color: var(--color-primary-contrast);
+}
+.bg-primary {
+    color: var(--color-light);
+    background-color: var(--color-primary);
+}
+/*----------------------------------------------------------------------*/
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none; }
+
+.nav-link {
+  display: block;
+  padding: 0.5rem 1rem; }
+  .nav-link:hover, .nav-link:focus {
+    text-decoration: none; }
+  .nav-link.disabled {
+    color: #6c757d;
+    pointer-events: none;
+    cursor: default; }
+
+.nav-tabs {
+  border-bottom: 1px solid #dee2e6; }
+  .nav-tabs .nav-item {
+    margin-bottom: -1px; }
+  .nav-tabs .nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem; }
+    .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
+      border-color: #e9ecef #e9ecef #dee2e6; }
+    .nav-tabs .nav-link.disabled {
+      color: #6c757d;
+      background-color: transparent;
+      border-color: transparent; }
+  .nav-tabs .nav-link.active,
+  .nav-tabs .nav-item.show .nav-link {
+    color: #495057;
+    background-color: white;
+    border-color: #dee2e6 #dee2e6 white; }
+  .nav-tabs .dropdown-menu {
+    margin-top: -1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0; }
+
+    .nav-pills .nav-link {
+      border-radius: 0.25rem; }
+
+    .nav-pills .nav-link.active,
+    .nav-pills .show > .nav-link {
+      color: #fff;
+      background-color: #801e7e; }
+
+    .nav-fill .nav-item {
+      flex: 1 1 auto;
+      text-align: center; }
+
+    .nav-justified .nav-item {
+      flex-basis: 0;
+      flex-grow: 1;
+      text-align: center; }
+
+/*--------------------TABLA DE GRID VIEW--------------------------------*/
+.table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+    border: 1px solid var(--color-primary);
+}
+.table-bordered > thead > tr > th{
+    background-color: var(--color-primary);
+     padding: 8px 15px;
+     font-size: 16px;
+     color: var(--color-primary-contrast);
+}
+/*---------------------------------------------------------------------*/

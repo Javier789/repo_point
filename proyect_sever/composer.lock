@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5fab93c4c3f2210b1dcdb07ae50e2c9c",
+    "content-hash": "d84d819653c13d964662d17620a83b00",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -166,6 +166,49 @@
                 "markdown-extra"
             ],
             "time": "2018-03-26T11:24:36+00:00"
+        },
+        {
+            "name": "consynki/yii2-image-input",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/levi-putna/yii2-image-input.git",
+                "reference": "da8362fabe3a77e4a054907e2793728cb20563d2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/levi-putna/yii2-image-input/zipball/da8362fabe3a77e4a054907e2793728cb20563d2",
+                "reference": "da8362fabe3a77e4a054907e2793728cb20563d2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "consynki\\yii\\input\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Levi Putna",
+                    "email": "levi.putna@consynki.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Yii2input widget to allow a better drag drop image upload",
+            "keywords": [
+                "image",
+                "input",
+                "yii2"
+            ],
+            "time": "2016-02-05T06:52:18+00:00"
         },
         {
             "name": "doctrine/lexer",

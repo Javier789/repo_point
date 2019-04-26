@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 /* @var $searchModel app\models\PresentacionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Presentacions';
+$this->title = 'Lista de Articulos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -19,18 +19,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Presentacion', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 </div>
 
 
  <!-- -------------------------- ------------------------------------------ -->
   <div class="py-0">
-    <div class="container" style="padding: 0 0 0 0;margin: 0 0 0 0; width: 100%;">
-      <div class="row bg-primary" style=" padding-top: 5px;">
-        <div class="col-md-7">
-
+    <div class="container">
+      <div class="row bg-primary" style=" padding: 10px 5px;height: 60px;">
+        <div class="col-md-3">
         <?php
         $estado=0;
 
@@ -40,18 +36,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'action' => Url::to(['presentacion/index']),
             'options' => ['class' => 'form-inline'],
         ]) ?>
-            <?= $form->field($searchModel, 'txtSearch')->textInput()->label('Buscar:') ?>
-> 
+            
+
             <!-- Form code begins -->
-          
+          <?= $form->field($searchModel, 'txtSearch')->textInput()->label('Buscar:') ?> 
           </div>
 
-        <div class="col-md-4">
-
-        </div>
        <!-- Form code ends --> 
-            <div class="form-group col-md-1">
+            <div class="form-group col-md-9">
                 <div class="col-lg-offset-1 col-lg-11">
+                   
                     <?= Html::submitButton('<i class="fa  fa-search fa-2x"></i>', ['class' => 'btn  btn-success','id'=>'botSubmit']) ?>
                 </div>
             </div>
@@ -65,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
      <?= ListView::widget([
     'dataProvider' => $dataProvider,
     'itemView' => function ($model, $key, $index, $widget) {
-        return $this->render('_list_item_pedido',['model' => $model,'findText'=>'Al']);
+        return $this->render('_item_articulo',['model' => $model,'findText'=>'Al']);
     },
              // Customzing options for pager container tag
         'options' => [
@@ -73,6 +67,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'class' => 'pager-wrapper',
             'id' => 'pager-container',
         ],
+          'emptyText'=>'<h5>NO HAY ARTICULOS PARA MOSTRAR</h5>',
+            'separator'=>'<hr/>',
     'pager' => [
         'firstPageLabel' => 'first',
         'lastPageLabel' => 'last',
@@ -82,3 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ],
 
 ]); ?>    
+
+    <p>
+        <?= Html::a('Agregar', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>

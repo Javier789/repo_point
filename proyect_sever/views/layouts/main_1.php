@@ -32,19 +32,36 @@ $this->title='Point soliciones en accesorios';
 <?php $this->beginBody() ?>
 
 <div class="wrap">
-  <nav class="navbar navbar-expand-md navbar-dark bg-primary">
-    <div class="container"> <a class="navbar-brand" href="#">
-        <img class="img-fluid d-block" src="../img/logo_point_blanco.svg" width="102px">
-      </a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbar16">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbar16">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item"> <a class="nav-link" href="#">FAQ</a> </li>
-        </ul> <a href="/index.php?r=site/login" class="btn navbar-btn ml-md-2 btn-light text-dark">login</a>
-      </div>
-    </div>
-  </nav>
+    <?php
+    NavBar::begin([
+        'brandLabel' => '<img id="logo" src="/img/logo_point_blanco.svg" alt="logo" width=124px>',//Yii::$app->name,
+        'brandUrl' => Yii::$app->homeUrl,
+        'options' => [
+            'class' => 'navbar-inverse navbar-fixed-top',
+        ],
+    ]);
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-right'],
+        'items' => [
+            //['label' => 'Home', 'url' => ['/site/index']],
+            //['label' => 'About', 'url' => ['/site/about']],
+            //['label' => 'Contact', 'url' => ['/site/contact']],
+            Yii::$app->user->isGuest ? (
+                ['label' => 'Login', 'url' => ['/site/login']]
+            ) : (
+                '<li>'
+                . Html::beginForm(['/site/logout'], 'post')
+                . Html::submitButton(
+                    'Salir (' . Yii::$app->user->identity->username . ')',
+                    ['class' => 'btn btn-link logout']
+                )
+                . Html::endForm()
+                . '</li>'
+            )
+        ],
+    ]);
+    NavBar::end();
+    ?>
 
     <div class="container">
         <?= Breadcrumbs::widget([

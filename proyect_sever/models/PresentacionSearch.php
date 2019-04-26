@@ -57,20 +57,21 @@ class PresentacionSearch extends Presentacion
         }
 
         // grid filtering conditions
-        /*$query->andFilterWhere([
+        $query->andFilterWhere([
             'codigoProducto' => $this->codigoProducto,
             'costo' => $this->costo,
             'precioSugerido' => $this->precioSugerido,
             'ganancia' => $this->ganancia,
             'idProducto' => $this->idProducto,
             'idMarca' => $this->idMarca
-        ]);*/
-        $query->join('LEFT JOIN', 'productos', 'presentaciones.idProducto = productos.id');
+        ]);
+$query->andWhere(['=', 'activo', '1']);
+       $query->join('LEFT JOIN', 'Productos', 'Presentaciones.idProducto = Productos.id');
         $query  ->andFilterWhere(
                 ['or',
-                ['like', 'productos.nombre', '%'.$this->txtSearch.'%'],
-                ['like', 'codigoProducto', '%'.$this->txtSearch.'%'],
-                ['like', 'descripcion', '%'.$this->txtSearch.'%'],
+                ['like', 'Productos.nombre', $this->txtSearch],
+                ['like', 'codigoProducto', $this->txtSearch],
+                ['like', 'Presentaciones.descripcion', $this->txtSearch],
                 ]);
 
         return $dataProvider;
