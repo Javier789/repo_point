@@ -73,5 +73,11 @@ class PresentacionSearch extends Presentacion {
         ]);
         return $dataProvider;
     }
+public function searchCodigo($params)
+    {
+            $this->load($params);
+        return Presentacion::find()->where(['codigoProducto' => $this->txtSearch])->one();
+        
 
+    }
 }
