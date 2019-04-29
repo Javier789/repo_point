@@ -13,13 +13,12 @@ use yii\web\UploadedFile;
 /**
  * PresentacionController implements the CRUD actions for Presentacion model.
  */
-class PresentacionController extends Controller
-{
+class PresentacionController extends Controller {
+
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -34,72 +33,65 @@ class PresentacionController extends Controller
      * Lists all Presentacion models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $searchModel = new PresentacionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
-    /**
-     * Displays a single Presentacion model.
-     * @param integer $codigoProducto
-     * @param integer $idMarca
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($codigoProducto, $idMarca)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($codigoProducto, $idMarca),
-        ]);
-    }
+  
 
     /**
      * Creates a new Presentacion model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * If creation is successful, the browser will be redirected to the 'Index' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new Presentacion();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-             $file = UploadedFile::getInstance($model,'foto');
-             var_dump($file->name);
-             var_dump($file);
-            var_dump($_FILES);
-            var_dump(file_get_contents($file->tempName));
-            //return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+            return $model->foto;
+            $file = UploadedFile::getInstance($model, 'foto');
+            $model->setAttribute('foto', 'data:' . $file->type . ';base64,' . base64_encode(file_get_contents($file->tempName)));
+            if ($model->save()) {
+                return $this->redirect(
+                                ['index']);
+            }
         }
-
         return $this->render('create', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
     /**
      * Updates an existing Presentacion model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * If update is successful, the browser will be redirected to the 'Index' page.
      * @param integer $codigoProducto
-     * @param integer $idMarca
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($codigoProducto, $idMarca)
-    {
-        $model = $this->findModel($codigoProducto, $idMarca);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
+    public function actionUpdate($codigoProducto) {
+        $model = $this->findModel($codigoProducto);
+        $fotoActual = $model->foto;
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+            if (UploadedFile::getInstance($model, 'foto')) {
+                $file = UploadedFile::getInstance($model, 'foto');
+                $model->setAttribute('foto', 'data:' . $file->type . ';base64,' . base64_encode(file_get_contents($file->tempName)));
+            } else {
+                $model->foto = $fotoActual;
+            }
+            if ($model->save()) {
+                return $this->redirect(
+                                ['index']);
+            }
         }
-
         return $this->render('update', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -107,31 +99,37 @@ class PresentacionController extends Controller
      * Deletes an existing Presentacion model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $codigoProducto
-     * @param integer $idMarca
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($codigoProducto, $idMarca)
-    {
-        $this->findModel($codigoProducto, $idMarca)->delete();
-
+    public function actionDelete($codigoProducto) {
+        $this->findModel($codigoProducto)->delete();
         return $this->redirect(['index']);
+    }
+    
+    public function updateStock($codigoProducto)
+    {
+        $model = $this->findModel($codigoProducto);
+        $cantidad = Yii::$app->request->post('cantidad');
+        $model->updateStock($cantidad);
+        $nroComprobante = Yii::$app->request->post('nroComprobante');
+        //crear un nuevo comprobante, si no existe y agregarle el detalle
+        return $this->redirect(['update-spress']);
     }
 
     /**
      * Finds the Presentacion model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $codigoProducto
-     * @param integer $idMarca
      * @return Presentacion the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($codigoProducto, $idMarca)
-    {
-        if (($model = Presentacion::findOne(['codigoProducto' => $codigoProducto, 'idMarca' => $idMarca])) !== null) {
+    protected function findModel($codigoProducto) {
+        if (($model = Presentacion::findOne(['codigoProducto' => $codigoProducto])) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
 }
