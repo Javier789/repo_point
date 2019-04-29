@@ -9,14 +9,14 @@ use app\models\Presentacion;
 /**
  * PresentacionSearch represents the model behind the search form of `app\models\Presentacion`.
  */
-class PresentacionSearch extends Presentacion
-{
+class PresentacionSearch extends Presentacion {
+
     public $txtSearch;
+
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['txtSearch'], 'string', 'max' => 30]
         ];
@@ -25,8 +25,7 @@ class PresentacionSearch extends Presentacion
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -38,10 +37,9 @@ class PresentacionSearch extends Presentacion
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = Presentacion::find();
-        
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -65,15 +63,21 @@ class PresentacionSearch extends Presentacion
             'idProducto' => $this->idProducto,
             'idMarca' => $this->idMarca
         ]);
-$query->andWhere(['=', 'activo', '1']);
-       $query->join('LEFT JOIN', 'Productos', 'Presentaciones.idProducto = Productos.id');
-        $query  ->andFilterWhere(
+        $query->andWhere(['=', 'activo', '1']);
+        $query->join('LEFT JOIN', 'Productos', 'Presentaciones.idProducto = Productos.id');
+        $query->andFilterWhere(
                 ['or',
-                ['like', 'Productos.nombre', $this->txtSearch],
-                ['like', 'codigoProducto', $this->txtSearch],
-                ['like', 'Presentaciones.descripcion', $this->txtSearch],
-                ]);
+                    ['like', 'Productos.nombre', $this->txtSearch],
+                    ['like', 'codigoProducto', $this->txtSearch],
+                    ['like', 'Presentaciones.descripcion', $this->txtSearch],
+        ]);
 
         return $dataProvider;
     }
+
+    public function searchCodigo($params) {
+        $this->load($params);
+        return Presentacion::find()->where(['codigoProducto' => $this->txtSearch])->one();
+    }
+
 }

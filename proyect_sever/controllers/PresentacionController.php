@@ -74,7 +74,7 @@ class PresentacionController extends Controller
              var_dump($file);
             var_dump($_FILES);
             var_dump(file_get_contents($file->tempName));
-            //return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
+            return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
         }
 
         return $this->render('create', [
@@ -100,6 +100,23 @@ class PresentacionController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+        ]);
+    }
+    
+    
+        public function actionUpdateSpress()
+    {
+        $searchModel = new PresentacionSearch();
+        $dataProvider = $searchModel->searchCodigo(Yii::$app->request->queryParams);
+
+
+       /* if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
+        }*/
+
+        return $this->render('update-spress', [
+            'searchModel' => $searchModel,
+            'model' => $dataProvider,
         ]);
     }
 
