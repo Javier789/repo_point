@@ -18,7 +18,7 @@ class PresentacionSearch extends Presentacion {
      */
     public function rules() {
         return [
-            [['txtSearch'], 'string', 'max' => 30]
+                [['txtSearch'], 'string', 'max' => 30]
         ];
     }
 
@@ -67,17 +67,11 @@ class PresentacionSearch extends Presentacion {
         $query->join('LEFT JOIN', 'Productos', 'Presentaciones.idProducto = Productos.id');
         $query->andFilterWhere(
                 ['or',
-                    ['like', 'Productos.nombre', $this->txtSearch],
-                    ['like', 'codigoProducto', $this->txtSearch],
-                    ['like', 'Presentaciones.descripcion', $this->txtSearch],
+                        ['like', 'Productos.nombre', $this->txtSearch],
+                        ['like', 'codigoProducto', $this->txtSearch],
+                        ['like', 'Presentaciones.descripcion', $this->txtSearch],
         ]);
-
         return $dataProvider;
-    }
-
-    public function searchCodigo($params) {
-        $this->load($params);
-        return Presentacion::find()->where(['codigoProducto' => $this->txtSearch])->one();
     }
 
 }
