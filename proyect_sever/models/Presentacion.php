@@ -94,12 +94,13 @@ class Presentacion extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getStocks()
+    public function getStock()
     {
         return $this->hasMany(Stock::className(), ['idPresentacion' => 'codigoProducto', 'idMarca' => 'idMarca']);
     }
     public function updateStock($cantidad)
     {
-        //Buscar el stock relacionado al producto y actualizar el valor
+        $stock = $this->getStock()->one();
+        $stock->agregarUnidades();
     }
 }
