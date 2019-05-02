@@ -191,13 +191,12 @@ $marcas = app\models\Marca::find()
 
     var app = angular.module('myApp', []);
     app.controller('myCtrl', function ($scope) {
-        $scope.ganancia = <?= $model->ganancia ?>;
-        $scope.precioSugerido = <?= $model->precioSugerido ?>;
-        $scope.costo = <?= $model->costo ?>;
+        $scope.ganancia = <?= $model->ganancia? $model->ganancia : 0 ?>;
+        $scope.precioSugerido = <?= $model->precioSugerido? $model->precioSugerido : 0 ?>;
+        $scope.costo = <?= $model->costo? $model->costo : 0 ?>;
         $scope.gananciaSocio = $scope.precioSugerido - ($scope.ganancia + $scope.costo);
         $scope.calculo = function () {
             $scope.precioSugerido = $scope.ganancia + $scope.gananciaSocio + $scope.costo;
-            document.getElementById('presentacion-costo').value = $scope.costo;
         }
     });
 </script>
