@@ -55,10 +55,13 @@ class PresentacionController extends Controller {
         $model = new Presentacion();
         if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
-            return $model->foto;
+            //return var_dump(UploadedFile::getInstance($model, 'foto'));
             $file = UploadedFile::getInstance($model, 'foto');
             $model->setAttribute('foto', 'data:' . $file->type . ';base64,' . base64_encode(file_get_contents($file->tempName)));
             if ($model->save()) {
+                $stock = new \app\models\Stock();
+                $stock->setAttributes(['cantidad'=> 0, 'fechaActualizacion' => date('Y-m-d'), 'idPresentacion'=> $model->idProducto ], true);
+                $stock->save();
                 return $this->redirect(
                                 ['index']);
             }
