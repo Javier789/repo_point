@@ -67,7 +67,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface {
     {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
-                $this->auth_key = \Yii::$app->security->generateRandomString();
+                $this->authKey = \Yii::$app->security->generateRandomString();
             }
             return true;
         }

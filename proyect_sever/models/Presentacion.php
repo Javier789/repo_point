@@ -22,38 +22,35 @@ use Yii;
  * @property Producto $producto
  * @property Stock[] $stocks
  */
-class Presentacion extends \yii\db\ActiveRecord
-{
+class Presentacion extends \yii\db\ActiveRecord {
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'Presentaciones';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['codigoProducto', 'costo', 'descripcion', 'idProducto', 'idMarca'], 'required'],
-            [['codigoProducto', 'idProducto', 'idMarca', 'activo'], 'integer'],
-            [['costo', 'precioSugerido', 'ganancia'], 'number'],
-            [['foto'], 'string'],
-            [['descripcion'], 'string', 'max' => 200],
-            [['codigoProducto', 'idMarca'], 'unique', 'targetAttribute' => ['codigoProducto', 'idMarca']],
-            [['idMarca'], 'exist', 'skipOnError' => true, 'targetClass' => Marca::className(), 'targetAttribute' => ['idMarca' => 'codigoEmpresa']],
-            [['idProducto'], 'exist', 'skipOnError' => true, 'targetClass' => Producto::className(), 'targetAttribute' => ['idProducto' => 'id']],
+                [['codigoProducto', 'costo', 'descripcion', 'idProducto', 'idMarca'], 'required'],
+                [['codigoProducto', 'idProducto', 'idMarca', 'activo'], 'integer'],
+                [['costo', 'precioSugerido', 'ganancia'], 'number'],
+                [['foto'], 'string'],
+                [['descripcion'], 'string', 'max' => 200],
+                [['codigoProducto', 'idMarca'], 'unique', 'targetAttribute' => ['codigoProducto', 'idMarca']],
+                [['idMarca'], 'exist', 'skipOnError' => true, 'targetClass' => Marca::className(), 'targetAttribute' => ['idMarca' => 'codigoEmpresa']],
+                [['idProducto'], 'exist', 'skipOnError' => true, 'targetClass' => Producto::className(), 'targetAttribute' => ['idProducto' => 'id']],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'codigoProducto' => 'Codigo Producto',
             'costo' => 'Costo',
@@ -70,37 +67,35 @@ class Presentacion extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDetallesComporbante()
-    {
+    public function getDetallesComporbante() {
         return $this->hasOne(DetallesComporbante::className(), ['idPresentacion' => 'codigoProducto', 'idMarca' => 'idMarca']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMarca()
-    {
+    public function getMarca() {
         return $this->hasOne(Marca::className(), ['codigoEmpresa' => 'idMarca']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProducto()
-    {
+    public function getProducto() {
         return $this->hasOne(Producto::className(), ['id' => 'idProducto']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getStock()
-    {
+    public function getStock() {
         return $this->hasMany(Stock::className(), ['idPresentacion' => 'codigoProducto', 'idMarca' => 'idMarca']);
     }
-    public function updateStock($cantidad)
-    {
+
+    public function updateStock($cantidad) {
         $stock = $this->getStock()->one();
-        $stock->agregarUnidades();
+        $stock->agregarUnidades($cantidad);
     }
+
+
 }

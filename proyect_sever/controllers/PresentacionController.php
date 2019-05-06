@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use app\models\FormEpressPresentacion;
+use yii\filters\AccessControl;
 
 /**
  * PresentacionController implements the CRUD actions for Presentacion model.
@@ -23,10 +24,8 @@ class PresentacionController extends Controller {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['*'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -68,10 +67,12 @@ class PresentacionController extends Controller {
             $model->load(Yii::$app->request->post());
             //return var_dump(UploadedFile::getInstance($model, 'foto'));
             $file = UploadedFile::getInstance($model, 'foto');
-            $model->setAttribute('foto', 'data:' . $file->type . ';base64,' . base64_encode(file_get_contents($file->tempName)));
+            if ($file) {
+                 $model->setAttribute('foto', 'data:' . $file->type . ';base64,' . base64_encode(file_get_contents($file->tempName)));
+            }
             if ($model->save()) {
                 $stock = new \app\models\Stock();
-                $stock->setAttributes(['cantidad'=> 0, 'fechaActualizacion' => date('Y-m-d'), 'idPresentacion'=> $model->idProducto ], true);
+                $stock->setAttributes(['cantidad'=> 0, 'fechaActualizacion' => date('Y-m-d'), 'idPresentacion'=> $model->codigoProducto ], true);
                 $stock->save();
                 return $this->redirect(
                                 ['index']);
@@ -146,18 +147,11 @@ class PresentacionController extends Controller {
         
         $dataStock = new FormEpressPresentacion();
          if (Yii::$app->request->post()) {
-             $dataStock->load(Yii::$app->request->post()); 
-             var_dump(Yii::$app->request->post());
-             echo '<h1>SI HAY DATOS'.$dataStock->cantidad.'</h1>';
-             
+             $dataStock->load(Yii::$app->request->post());
          }else{
              echo '<h1>NO HAY DATOS..</h1>';
          }
-       
         $model = $this->findModel($dataStock->codigo);
-        
-        $cantidad = $dataStock->cantidad;
-        $nroComprobante = $dataStock->numeroComprobante;
         
         $model->updateStock($cantidad);
         /* */
@@ -165,7 +159,20 @@ class PresentacionController extends Controller {
         //echo '<h1>PASAMOS ...'.$dataStock->codigo.'</h1>';
         return $this->redirect(['update-spress']);
         //crear un nuevo comprobante, si no existe y agregarle el detalle
-        //$comprobante = \app\models\ComprobantesCompra::find(['id'=> ])
+        $comprobante = \app\models\ComprobantesCompra::find(['id'=> $dataStock->numeroComprobante])->one();
+        if($comprobante)
+        {
+            $comprobante->agregarDetalle($dataStock->cantidad, $dataStock->codigo);
+        }
+        else
+        {
+            $comprobante = new \app\models\ComprobantesCompra();
+            $comprobante->fechaIngreso = date('Y-m-d');
+            if($comprobante->save())
+            {
+             $comprobante->agregarDetalle($dataStock->cantidad, $dataStock->codigo);   
+            }   
+        }
        // return $this->redirect(['update-spress']);
     }
 
