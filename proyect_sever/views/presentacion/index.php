@@ -1,8 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;//?
-
+use yii\grid\GridView; //?
 use yii\helpers\Url;
 use yii\widgets\ListView;
 use yii\widgets\ActiveForm;
@@ -22,63 +21,67 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 
- <!-- -------------------------- ------------------------------------------ -->
-  <div class="py-0">
+
+<!-- -------------------------- ------------------------------------------ -->
+<div class="py-0">
     <div class="container">
-      <div class="row bg-primary" style=" padding: 10px 5px;height: 60px;">
-        <div class="col-md-3">
-        <?php
-        $estado=0;
+        <div class="row bg-primary" style=" padding: 10px 5px;height: 60px;">
+            <div class="col-md-3">
+                <?php
+                $estado = 0;
 
-        $form = ActiveForm::begin([
-            'id' => 'search-form',
-            'method' => 'get',
-            'action' => Url::to(['presentacion/index']),
-            'options' => ['class' => 'form-inline'],
-        ]) ?>
-            
+                $form = ActiveForm::begin([
+                            'id' => 'search-form',
+                            'method' => 'get',
+                            'action' => Url::to(['presentacion/index']),
+                            'options' => ['class' => 'form-inline'],
+                        ])
+                ?>
 
-            <!-- Form code begins -->
-          <?= $form->field($searchModel, 'txtSearch')->textInput()->label('Buscar:') ?> 
-          </div>
 
-       <!-- Form code ends --> 
-            <div class="form-group col-md-9">
+                <!-- Form code begins -->
+                <?= $form->field($searchModel, 'txtSearch')->textInput()->label('Buscar:') ?> 
+            </div>
+             <div class="col-md-3">
+            <p>
+                <?= Html::a('Agregar', ['create'], ['class' => 'btn btn-success']) ?>
+            </p>
+             <div class="col-md-3">
+            <!-- Form code ends --> 
+            <div class="form-group col-md-3">
                 <div class="col-lg-offset-1 col-lg-11">
-                   
-                    <?= Html::submitButton('<i class="fa  fa-search fa-2x"></i>', ['class' => 'btn  btn-success','id'=>'botSubmit']) ?>
+
+                    <?= Html::submitButton('<i class="fa  fa-search fa-2x"></i>', ['class' => 'btn  btn-success', 'id' => 'botSubmit']) ?>
                 </div>
             </div>
-        <?php ActiveForm::end() ?>
-      </div>
+
+            <?php ActiveForm::end() ?>
+        </div>
     </div>
-  </div>
+</div>
 
 
 <!-- -------------------------- ------------------------------------------ -->
-     <?= ListView::widget([
+<?=
+ListView::widget([
     'dataProvider' => $dataProvider,
     'itemView' => function ($model, $key, $index, $widget) {
-        return $this->render('_item_articulo',['model' => $model,'findText'=>'Al']);
+        return $this->render('_item_articulo', ['model' => $model, 'findText' => 'Al']);
     },
-             // Customzing options for pager container tag
-        'options' => [
-            'tag' => 'div',
-            'class' => 'pager-wrapper',
-            'id' => 'pager-container',
-        ],
-          'emptyText'=>'<h5>NO HAY ARTICULOS PARA MOSTRAR</h5>',
-            'separator'=>'<hr/>',
+    // Customzing options for pager container tag
+    'options' => [
+        'tag' => 'div',
+        'class' => 'pager-wrapper',
+        'id' => 'pager-container',
+    ],
+    'emptyText' => '<h5>NO HAY ARTICULOS PARA MOSTRAR</h5>',
+    'separator' => '<hr/>',
     'pager' => [
         'firstPageLabel' => 'first',
         'lastPageLabel' => 'last',
         'prevPageLabel' => '<span class="glyphicon glyphicon-chevron-left"></span>',
         'nextPageLabel' => '<span class="glyphicon glyphicon-chevron-right"></span>',
-        
     ],
+]);
+?>    
 
-]); ?>    
-
-    <p>
-        <?= Html::a('Agregar', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>

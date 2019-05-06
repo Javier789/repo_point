@@ -42,7 +42,20 @@ $this->title='Point soliciones en accesorios';
       <div class="collapse navbar-collapse" id="navbar16">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item"> <a class="nav-link" href="#">FAQ</a> </li>
-        </ul> <a href="/index.php?r=site/login" class="btn navbar-btn ml-md-2 btn-light text-dark">login</a>
+         <!--</ul> <a href="/index.php?r=site/login" class="btn navbar-btn ml-md-2 btn-light text-dark">login</a>-->
+         <?php echo Yii::$app->user->isGuest ? (
+                '<a href="/index.php?r=site/login" class="btn navbar-btn ml-md-2 btn-light text-dark">login</a>'
+            ) : (
+                '<li>'
+                . Html::beginForm(['/site/logout'], 'post')
+                . Html::submitButton(
+                    'Salir (' . Yii::$app->user->identity->username . ')',
+                    ['class' => 'btn btn-link logout']
+                )
+                . Html::endForm()
+                . '</li>'
+            );
+            ?>
       </div>
     </div>
   </nav>

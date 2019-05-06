@@ -61,9 +61,15 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+		if (!Yii::$app->user->isGuest) {
+            return $this->render('index');
+        }else{
+			
+			return $this->redirect('index.php?r=site/login');
+        }
     }
-
+    
+  
     /**
      * Login action.
      *
@@ -97,6 +103,15 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
+    
+    /**
+     * Funcion que nos lleva al inicio
+     */
+    public function goHome(){ //sobrescrita
+		
+		 return $this->redirect('index.php?r=site/index');
+	
+	}
 
     /**
      * Displays contact page.

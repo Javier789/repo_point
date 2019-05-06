@@ -61,8 +61,8 @@ $marcas = app\models\Marca::find()
                             <h3> Descripción</h3>
                         </div>
                         <div class="card-body">
-                            <h4> Nombre del producto </h4>
-                            <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true, 'class' => 'form-control-lg my-1 text-primary', 'style' => 'font-size:12px']) ?>
+                            <h4> Descripción del producto </h4>
+                            <?= $form->field($model, 'descripcion')->textarea(['type'=>'textarea','maxlength' => true, 'class' => 'form-control-lg my-1 text-primary', 'style' => 'font-size:12px'])->label(false) ?>
                         </div>
                         <div class="row m-2">
                             <div class="col-md-5">
