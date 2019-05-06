@@ -73,5 +73,12 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface {
         }
         return false;
     }
-
+    /* Busca la identidad del usuario a través del username */
+    public static function findByUsername($username)
+    {
+        $user = User::find()
+                ->andWhere("username=:username", [":username" => $username])
+                ->one();
+        return $user;
+    }
 }

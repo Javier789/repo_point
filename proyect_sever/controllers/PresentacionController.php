@@ -21,6 +21,17 @@ class PresentacionController extends Controller {
      */
     public function behaviors() {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['logout'],
+                'rules' => [
+                    [
+                        'actions' => ['*'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -154,6 +165,7 @@ class PresentacionController extends Controller {
         //echo '<h1>PASAMOS ...'.$dataStock->codigo.'</h1>';
         return $this->redirect(['update-spress']);
         //crear un nuevo comprobante, si no existe y agregarle el detalle
+        //$comprobante = \app\models\ComprobantesCompra::find(['id'=> ])
        // return $this->redirect(['update-spress']);
     }
 
