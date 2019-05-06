@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use app\models\FormEpressPresentacion;
 
 /**
  * PresentacionController implements the CRUD actions for Presentacion model.
@@ -94,11 +95,13 @@ class PresentacionController extends Controller {
                     'model' => $model,
         ]);
     }
+    
+    
   public function actionUpdateSpress()
     {
         $searchModel = new PresentacionSearch();
         $dataProvider = $searchModel->searchCodigo(Yii::$app->request->queryParams);
-
+        $stockData = new FormEpressPresentacion();
 
        /* if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
@@ -107,8 +110,11 @@ class PresentacionController extends Controller {
         return $this->render('update-spress', [
             'searchModel' => $searchModel,
             'model' => $dataProvider,
+            'stockData'=>$stockData
         ]);
     }
+    
+    
     /**
      * Deletes an existing Presentacion model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -121,14 +127,31 @@ class PresentacionController extends Controller {
         return $this->redirect(['index']);
     }
     
-    public function updateStock($codigoProducto)
+    public function actionUpdateStock()
     {
-        $model = $this->findModel($codigoProducto);
-        $cantidad = Yii::$app->request->post('cantidad');
+        
+        $dataStock = new FormEpressPresentacion();
+         if (Yii::$app->request->post()) {
+             $dataStock->load(Yii::$app->request->post()); 
+             var_dump(Yii::$app->request->post());
+             echo '<h1>SI HAY DATOS'.$dataStock->cantidad.'</h1>';
+             
+         }else{
+             echo '<h1>NO HAY DATOS..</h1>';
+         }
+       
+        $model = $this->findModel($dataStock->codigo);
+        
+        $cantidad = $dataStock->cantidad;
+        $nroComprobante = $dataStock->numeroComprobante;
+        
         $model->updateStock($cantidad);
-        $nroComprobante = Yii::$app->request->post('nroComprobante');
-        //crear un nuevo comprobante, si no existe y agregarle el detalle
+        /* */
+        
+        //echo '<h1>PASAMOS ...'.$dataStock->codigo.'</h1>';
         return $this->redirect(['update-spress']);
+        //crear un nuevo comprobante, si no existe y agregarle el detalle
+       // return $this->redirect(['update-spress']);
     }
 
     /**
