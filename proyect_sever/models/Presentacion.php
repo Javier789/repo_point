@@ -15,7 +15,7 @@ use Yii;
  * @property double $ganancia
  * @property int $idProducto
  * @property int $idMarca
- * @property int $activo
+ * @property boolean $activo
  *
  * @property DetallesComporbante $detallesComporbante
  * @property Marca $marca
@@ -38,6 +38,7 @@ class Presentacion extends \yii\db\ActiveRecord {
         return [
                 [['codigoProducto', 'costo', 'descripcion', 'idProducto', 'idMarca'], 'required'],
                 [['codigoProducto', 'idProducto', 'idMarca', 'activo'], 'integer'],
+                ['selected', 'boolean'],
                 [['costo', 'precioSugerido', 'ganancia'], 'number'],
                 [['foto'], 'string'],
                 [['descripcion'], 'string', 'max' => 200],
@@ -97,5 +98,13 @@ class Presentacion extends \yii\db\ActiveRecord {
         $stock->agregarUnidades($cantidad);
     }
 
+    public function activar() {
+        $this->activo = true;
+    }
+
+    public function delete() {
+        $this->activo = false;
+        $this->save();
+    }
 
 }
