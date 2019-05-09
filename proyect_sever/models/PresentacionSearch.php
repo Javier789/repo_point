@@ -44,6 +44,7 @@ class PresentacionSearch extends Presentacion {
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => ['pageSize' => 4,  ],
         ]);
 
         $this->load($params);
