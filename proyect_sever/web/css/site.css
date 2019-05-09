@@ -4,7 +4,7 @@ html,
 body {
     height: 100%;
     font-family: 'Varela Round', sans-serif;
-   /* background: url('../img/fondo_productos.jpg') no-repeat fixed center center;*/
+    /* background: url('../img/fondo_productos.jpg') no-repeat fixed center center;*/
     background-color:var(  --primary-contrast);
 }
 
@@ -129,4 +129,13 @@ a.desc:after {
     position: relative;
     display: block;
     padding: 2px 2px;
+}
+.card-horizontal {
+    display: flex;
+    flex: 1 1 auto;
+}
+
+.pager-container {
+    overflow: scroll;
+    height: calc(100vh-500px);
 }
