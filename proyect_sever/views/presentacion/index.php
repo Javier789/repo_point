@@ -25,8 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <!-- -------------------------- ------------------------------------------ -->
 <div class="py-0">
     <div class="container">
-        <div class="row bg-primary" style=" padding: 10px 5px;height: 60px;">
-            <div class="col-md-3">
+      <div class="row bg-primary" >
+<!--  style=" padding: 10px 5px;height: 60px;"-->
+            <div class="col-md-12">
                 <?php
                 $estado = 0;
 
@@ -40,24 +41,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                 <!-- Form code begins -->
-                <?= $form->field($searchModel, 'txtSearch')->textInput()->label('Buscar:') ?> 
+                <?= $form->field($searchModel, 'txtSearch')->textInput(['style'=>'font-size:1.5em;'])->label('Buscar:') ?> 
+                <span>
+                      <?= Html::submitButton('<i class="fa  fa-search fa-2x" style="height:0px"></i>', ['class' => 'btn  btn-success m-1', 'id' => 'botSubmit','style'=>'height: 32px; padding-top: 0px; width: 42px;']) ?>
+                </span>
+                <span  style="position: absolute;right: 5px;">
+                      <?= Html::a('Agregar', ['create'], ['class' => 'btn btn-success ', 'style'=>'font-size:1.5em;']) ?>
+                </span>
             </div>
-             <div class="col-md-3">
-            <p>
-                <?= Html::a('Agregar', ['create'], ['class' => 'btn btn-success']) ?>
-            </p>
-             <div class="col-md-3">
-            <!-- Form code ends --> 
-            <div class="form-group col-md-3">
-                <div class="col-lg-offset-1 col-lg-11">
-
-                    <?= Html::submitButton('<i class="fa  fa-search fa-2x"></i>', ['class' => 'btn  btn-success', 'id' => 'botSubmit']) ?>
-                </div>
-            </div>
-
+  
             <?php ActiveForm::end() ?>
+         </div>
         </div>
-    </div>
 </div>
 
 
@@ -75,13 +70,14 @@ ListView::widget([
         'id' => 'pager-container',
     ],
     'emptyText' => '<h5>NO HAY ARTICULOS PARA MOSTRAR</h5>',
-    'separator' => '<hr/>',
     'pager' => [
         'firstPageLabel' => 'first',
         'lastPageLabel' => 'last',
         'prevPageLabel' => '<span class="glyphicon glyphicon-chevron-left"></span>',
         'nextPageLabel' => '<span class="glyphicon glyphicon-chevron-right"></span>',
-    ],
+        //'class'     => InfiniteScrollPager::className(),
+
+      ],
 ]);
 ?>    
 

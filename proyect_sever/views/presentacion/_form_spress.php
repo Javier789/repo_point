@@ -13,10 +13,22 @@ use yii\base\DynamicModel;
 /* @var $searchModel app\models\PresentacionSearch */
 /* @var  $stockData app\models\FormEpressPresentacion */
 $hayPresentacion=false;
-if($model){
-    $hayPresentacion=true;
-    $stockData->codigo=$model->codigoProducto;
-    echo 'el codigo del  producto es '.$model->codigoProducto;
+$cantidadActivar='true';
+$focoNumComp=false;
+$focoCodigoBarra=false;
+$focoCantidad=false;
+
+
+if(isset($stockData->codigo)){
+    if($model){
+        $hayPresentacion=true;
+        $stockData->codigo=$model->codigoProducto;
+        $focoCantidad=true;
+     }else{
+         $focoCodigoBarra=true;
+     }
+}else{
+     $focoNumComp=true;
 }
     
 
@@ -30,7 +42,8 @@ if($model){
         $form = ActiveForm::begin([
             'id' => 'search-form',
             'method' => 'get',
-            'action' => Url::to(['presentacion/update-spress'])
+            'action' => Url::to(['presentacion/update-spress']),
+            'options' => ['class'=>'spress-form']
         ]); 
         
     }
@@ -45,9 +58,22 @@ if($model){
       <div class="row bg-light">
         <div class="col-md-12 border-bottom border-primary">
           <div class="blockquote">
+       <?php $formup = ActiveForm::begin([
+             'id' => 'update-form',
+             'method' => 'post',
+             'action' => Url::to(['presentacion/update-stock']),
+             'options' => ['class'=>'spress-form']
+         ]); ?>
             <div class="form-group">
-              <label for="exampleFormControlSelect1"></label>
+              <label for="txtNumeroComprobante">Nº de Comprobante</label>
             </div>
+              <div class="row">
+                  <div class="col-md-6">
+                         <?= $formup->field($stockData ,'numeroComprobante')->textInput(['class'=>'form-control form-control-lg', 'autofocus'=>$focoNumComp,'onfocus'=>'this.select()', 'id'=>'txtNumeroComprobante', 'placeholder'=>'Número de Comprobante', 'style'=>'font-size:24px'])->label('Número');?>
+<!--                      <input type="text" class="form-control form-control-lg" id="txtNumeroComprobante" placeholder="Número de Comprobante" style="font-size:24px" value ="<=Html::encode($stockData->numeroComprobante);?>">-->
+                  </div>
+              </div>
+              
             <div class="form-group">
               <label for="inlineFormInputGroupUsername2">Código de barra</label>
             </div>
@@ -55,10 +81,13 @@ if($model){
               <div class="col-md-6">
                 <div class="input-group mb-2 mr-sm-2">
                       <?php if(!$hayPresentacion){
-                          echo $form->field($searchModel, 'txtSearch')->textInput(['class'=>'form-control-lg','placeholder'=>'Codido de barra','style'=>'font-size:24px'])->label('Buscar:');
+                          echo $form->field($searchModel, 'txtSearch')->textInput(['class'=>'form-control-lg', 'autofocus'=>$focoCodigoBarra,'onfocus'=>'this.select()' ,'placeholder'=>'Codido de barra','style'=>'font-size:24px'])->label('Buscar:');
                       } else{ ?> 
                     <input type="text" class="form-control form-control-lg" id="inlineFormInputGroupUsername2" placeholder="Codido de barra" style="font-size:30px" disabled="true" value ="<?=Html::encode($model->codigoProducto);?>">
-                     <?php } ?>
+                     <?php
+                        $cantidadActivar='false';
+     
+                      } ?>
                   <div class="input-group-prepend">
                     <div class="input-group-text"><i class="fa fa-barcode fa-2x text-primary"></i></div>
                   </div>
@@ -129,16 +158,12 @@ if($model){
               <div class="col-md-3">
                 <h1 class="">Cantidad</h1>
               </div>
-              <?php $formup = ActiveForm::begin([
-                    'id' => 'update-form',
-                    'method' => 'post',
-                    'action' => Url::to(['presentacion/update-stock'])
-                ]); ?>
+ 
               <div class="col-md-9">
                 <div class="input-group mb-2 mr-sm-2 input-group-lg">
-                     <?= $formup->field($stockData ,'cantidad')->textInput(['class'=>'form-control-lg','placeholder'=>'0,00','style'=>'font-size:24px','value'=>'1', 'autofocus'=>true,'onfocus'=>'this.select()','onkeeyup'=>'enterCantidad(event);'])->label('Buscar:') ?> 
+                     <?= $formup->field($stockData ,'cantidad')->textInput(['class'=>'form-control-lg','placeholder'=>'0,00','style'=>'font-size:24px; disabled:"'.$cantidadActivar.'"','value'=>'1', 'autofocus'=>$focoCantidad,'onfocus'=>'this.select()','onkeeyup'=>'enterCantidad(event);'])->label('Buscar:') ?> 
                      <?= $formup->field($stockData ,'codigo')->hiddenInput()->label(false);?>
-                     <?= $formup->field($stockData ,'numeroComprobante')->hiddenInput(['value'=>'333'])->label(false);?>
+                  
 <!--                    <input type="number" class="form-control-lg" id="numCantidad" placeholder="0,00" style="" value="1" autofocus onfocus="this.select();" onkeyup="enterCantidad(event);">-->
                   <div class="input-group-prepend">
                     <div class="input-group-text bg-primary text-light ml-1 px-2">
@@ -156,6 +181,10 @@ if($model){
       </div>
     </div>
         <script>
+            
+
+                 
+                 
             function enterCantidad(e){
                  var enterKey = 13;
                     if (e.which == enterKey){
@@ -174,3 +203,31 @@ if($model){
     <?php ActiveForm::end(); ?>
 
 </div>
+ <?php
+$script = <<< JS
+    jQuery(document).ready(function($) {
+                    $(".spress-form").submit(function(event) {
+                         event.preventDefault(); // stopping submitting
+                         var data = $(this).serializeArray();
+                         var url = $(this).attr('action');
+                         $.ajax({
+                             url: url,
+                             type: 'post',
+                             dataType: 'json',
+                             data: data
+                         })
+                         .done(function(response) {
+                             if (response.data.success == true) {
+                                 alert("Wow you commented");
+                             }
+                         })
+                         .fail(function() {
+                             console.log("error");
+                         });
+
+                     });
+                 });
+JS;
+    
+    $this->registerJs($script);
+ ?>

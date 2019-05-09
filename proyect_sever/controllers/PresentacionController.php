@@ -20,7 +20,7 @@ class PresentacionController extends Controller {
     /**
      * {@inheritdoc}
      */
-    public function behaviors() {
+      public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -45,6 +45,9 @@ class PresentacionController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
+        
+        $this->layout = "main_dashboard";//
+        
         $searchModel = new PresentacionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
