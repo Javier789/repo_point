@@ -23,9 +23,9 @@ overflow:visible;
 .main-menu {
 background: var(--gray-dark);
 border-right:1px solid #e5e5e5;
-position:absolute;
-top:67px;
-bottom:60px;
+position:fixed;
+top:0px;
+bottom:0px;
 height:calc(100vh-127px);
 left:0;
 width:60px;
