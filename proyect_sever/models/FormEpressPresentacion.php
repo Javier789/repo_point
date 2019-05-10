@@ -15,15 +15,15 @@ use yii\base\Model;
  */
 class FormEpressPresentacion extends Model {
     //put your code here
-    public $codigo;
+    public $codigoProducto;
     public $cantidad;
     public $numeroComprobante;
     
     public function rules(){
         {
         return [
-            [['codigo', 'cantidad','numeroComprobante'], 'required'],
-            [['codigo', 'cantidad','numeroComprobante'], 'number'],
+            [['codigoProducto', 'cantidad','numeroComprobante'], 'required'],
+            [['codigoProducto', 'cantidad','numeroComprobante'], 'number'],
         ];
     }
     }

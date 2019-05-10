@@ -58,7 +58,7 @@ class Stock extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Presentacion::className(), ['codigoProducto' => 'idPresentacion']);
     }
-    public function agregarUnidades(int $cantidad)
+    public function agregarUnidades($cantidad)
     {
         $this->cantidad = $this->cantidad + $cantidad;
         $this->fechaActualizacion = date("Y-m-d");

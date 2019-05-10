@@ -20,7 +20,7 @@ class PresentacionController extends Controller {
     /**
      * {@inheritdoc}
      */
-      public function behaviors() {
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -45,9 +45,9 @@ class PresentacionController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-        
-        $this->layout = "main_dashboard";//
-        
+
+        $this->layout = "main_dashboard"; //
+
         $searchModel = new PresentacionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -56,8 +56,6 @@ class PresentacionController extends Controller {
                     'dataProvider' => $dataProvider,
         ]);
     }
-
-  
 
     /**
      * Creates a new Presentacion model.
@@ -71,11 +69,11 @@ class PresentacionController extends Controller {
             //return var_dump(UploadedFile::getInstance($model, 'foto'));
             $file = UploadedFile::getInstance($model, 'foto');
             if ($file) {
-                 $model->setAttribute('foto', 'data:' . $file->type . ';base64,' . base64_encode(file_get_contents($file->tempName)));
+                $model->setAttribute('foto', 'data:' . $file->type . ';base64,' . base64_encode(file_get_contents($file->tempName)));
             }
             if ($model->save()) {
                 $stock = new \app\models\Stock();
-                $stock->setAttributes(['cantidad'=> 0, 'fechaActualizacion' => date('Y-m-d'), 'idPresentacion'=> $model->codigoProducto ], true);
+                $stock->setAttributes(['cantidad' => 0, 'fechaActualizacion' => date('Y-m-d'), 'idPresentacion' => $model->codigoProducto], true);
                 $stock->save();
                 return $this->redirect(
                                 ['index']);
@@ -113,26 +111,22 @@ class PresentacionController extends Controller {
                     'model' => $model,
         ]);
     }
-    
-    
-  public function actionUpdateSpress()
-    {
-        $searchModel = new PresentacionSearch();
-        $dataProvider = $searchModel->searchCodigo(Yii::$app->request->queryParams);
-        $stockData = new FormEpressPresentacion();
 
-       /* if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
-        }*/
+    public function actionUpdateSpress() {
+        $stockData = new FormEpressPresentacion();
+        $stockData->load(Yii::$app->request->post());
+        $dataProvider = Presentacion::findOne(['codigoProducto' => $stockData->codigoProducto]);
+
+        /* if ($model->load(Yii::$app->request->post()) && $model->save()) {
+          return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
+          } */
 
         return $this->render('update-spress', [
-            'searchModel' => $searchModel,
-            'model' => $dataProvider,
-            'stockData'=>$stockData
+                    'model' => $dataProvider,
+                    'stockData' => $stockData
         ]);
     }
-    
-    
+
     /**
      * Deletes an existing Presentacion model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -144,39 +138,59 @@ class PresentacionController extends Controller {
         $this->findModel($codigoProducto)->delete();
         return $this->redirect(['index']);
     }
-    
-    public function actionUpdateStock()
-    {
-        
+
+    /**
+     * Accion que actualiza el stock de los productos
+     * @return type
+     */
+    public function actionUpdateStock() {
+
         $dataStock = new FormEpressPresentacion();
-         if (Yii::$app->request->post()) {
-             $dataStock->load(Yii::$app->request->post());
-         }else{
-             echo '<h1>NO HAY DATOS..</h1>';
-         }
-        $model = $this->findModel($dataStock->codigo);
         
-        $model->updateStock($cantidad);
+        //
+        if (Yii::$app->request->post()) {
+            $dataStock->load(Yii::$app->request->post());
+        } else {
+            return $this->redirect(['update-spress',
+                        'model' => null,
+                        'stockData' => $dataStock
+            ]);
+        }
+
+        $model = Presentacion::findOne(['codigoProducto' => $dataStock->codigoProducto]);
+
+        if ($model) {
+            $model->updateStock($dataStock->cantidad);
+            
+            $dataStock->cantidad = 1;
+            $dataStock->codigoProducto = null;
+            return $this->render('update-spress',[
+                        'model' => null,
+                        'stockData' => $dataStock
+            ]);
+        }
+
         /* */
-        
+
         //echo '<h1>PASAMOS ...'.$dataStock->codigo.'</h1>';
         return $this->redirect(['update-spress']);
         //crear un nuevo comprobante, si no existe y agregarle el detalle
-        $comprobante = \app\models\ComprobantesCompra::find(['id'=> $dataStock->numeroComprobante])->one();
-        if($comprobante)
-        {
-            $comprobante->agregarDetalle($dataStock->cantidad, $dataStock->codigo);
-        }
-        else
-        {
+        $comprobante = \app\models\ComprobantesCompra::find(['id' => $dataStock->numeroComprobante])->one();
+        if ($comprobante) {
+            $comprobante->agregarDetalle($dataStock->cantidad, $dataStock->codigoProducto);
+        } else {
             $comprobante = new \app\models\ComprobantesCompra();
             $comprobante->fechaIngreso = date('Y-m-d');
-            if($comprobante->save())
-            {
-             $comprobante->agregarDetalle($dataStock->cantidad, $dataStock->codigo);   
-            }   
+            if ($comprobante->save()) {
+                $comprobante->agregarDetalle($dataStock->cantidad, $dataStock->codigoProducto);
+            }
         }
-       // return $this->redirect(['update-spress']);
+        $dataStock->cantidad = null;
+        $dataStock->codigoProducto = null;
+        return $this->redirect(['update-spress',
+                    'model' => null,
+                    'stockData' => $dataStock
+        ]);
     }
 
     /**

@@ -10,7 +10,6 @@ use yii\base\DynamicModel;
 /* @var $this yii\web\View */
 /* @var $model app\models\Presentacion */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $searchModel app\models\PresentacionSearch */
 /* @var  $stockData app\models\FormEpressPresentacion */
 $hayPresentacion=false;
 $cantidadActivar='true';
@@ -19,34 +18,32 @@ $focoCodigoBarra=false;
 $focoCantidad=false;
 
 
-if(isset($stockData->codigo)){
+if(isset($stockData->codigoProducto)){
     if($model){
         $hayPresentacion=true;
-        $stockData->codigo=$model->codigoProducto;
+       // $stockData->codigoProducto=$model->codigoProducto;
         $focoCantidad=true;
      }else{
+         $hayPresentacion=false;
          $focoCodigoBarra=true;
      }
 }else{
      $focoNumComp=true;
 }
-    
-
-
+   
+//echo var_dump($stockData);
 ?>
 
 <div class="presentacion-form">
 
     <?php 
-    if(!$hayPresentacion){
-        $form = ActiveForm::begin([
-            'id' => 'search-form',
-            'method' => 'get',
-            'action' => Url::to(['presentacion/update-spress']),
-            'options' => ['class'=>'spress-form']
-        ]); 
-        
-    }
+   
+     $formup = ActiveForm::begin([
+             'id' => 'update-form',
+             'method' => 'post',
+             'action' => Url::to(['presentacion/update-spress'])
+             
+         ]);
     ?>
      <div class="py-2">
     <div class="container">
@@ -58,49 +55,51 @@ if(isset($stockData->codigo)){
       <div class="row bg-light">
         <div class="col-md-12 border-bottom border-primary">
           <div class="blockquote">
-       <?php $formup = ActiveForm::begin([
-             'id' => 'update-form',
-             'method' => 'post',
-             'action' => Url::to(['presentacion/update-stock']),
-             'options' => ['class'=>'spress-form']
-         ]); ?>
-            <div class="form-group">
-              <label for="txtNumeroComprobante">Nº de Comprobante</label>
-            </div>
-              <div class="row">
+     
+             <div class="row">
                   <div class="col-md-6">
-                         <?= $formup->field($stockData ,'numeroComprobante')->textInput(['class'=>'form-control form-control-lg', 'autofocus'=>$focoNumComp,'onfocus'=>'this.select()', 'id'=>'txtNumeroComprobante', 'placeholder'=>'Número de Comprobante', 'style'=>'font-size:24px'])->label('Número');?>
+                         <?= $formup->field($stockData ,'numeroComprobante')->textInput(['class'=>'form-control form-control-lg', 'autofocus'=>$focoNumComp,'onfocus'=>'this.select()', 'id'=>'txtNumeroComprobante', 'placeholder'=>'Número de Comprobante', 'style'=>'font-size:24px'])->label('Nº de Comprobante');?>
 <!--                      <input type="text" class="form-control form-control-lg" id="txtNumeroComprobante" placeholder="Número de Comprobante" style="font-size:24px" value ="<=Html::encode($stockData->numeroComprobante);?>">-->
                   </div>
               </div>
               
-            <div class="form-group">
-              <label for="inlineFormInputGroupUsername2">Código de barra</label>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="input-group mb-2 mr-sm-2">
-                      <?php if(!$hayPresentacion){
-                          echo $form->field($searchModel, 'txtSearch')->textInput(['class'=>'form-control-lg', 'autofocus'=>$focoCodigoBarra,'onfocus'=>'this.select()' ,'placeholder'=>'Codido de barra','style'=>'font-size:24px'])->label('Buscar:');
-                      } else{ ?> 
-                    <input type="text" class="form-control form-control-lg" id="inlineFormInputGroupUsername2" placeholder="Codido de barra" style="font-size:30px" disabled="true" value ="<?=Html::encode($model->codigoProducto);?>">
-                     <?php
-                        $cantidadActivar='false';
-     
-                      } ?>
-                  <div class="input-group-prepend">
-                    <div class="input-group-text"><i class="fa fa-barcode fa-2x text-primary"></i></div>
+             <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group mb-2 mr-sm-2">
+                        <?php if(!$hayPresentacion){
+                            //echo $form->field($searchModel, 'txtSearch')->textInput(['class'=>'form-control-lg', 'autofocus'=>$focoCodigoBarra,'onfocus'=>'this.select()' ,'placeholder'=>'Codido de barra','style'=>'font-size:24px'])->label('Buscar:');
+                            echo $formup->field($stockData, 'codigoProducto')->textInput(['class'=>'form-control-lg', 'autofocus'=>$focoCodigoBarra,'onfocus'=>'this.select()' ,'placeholder'=>'Codido de barra','style'=>'font-size:24px'])->label('Código de barra');
+                           
+                            } else{ ?> 
+                      <input type="text" class="form-control form-control-lg" id="inlineFormInputGroupUsername2" placeholder="Codido de barra" style="font-size:30px" disabled="true" value ="<?=Html::encode($model->codigoProducto);?>">
+                       <?php
+                          $cantidadActivar='false';
+
+                        } ?>
+                      
+                 <spam style="margin:10px;"><i class="fa fa-barcode fa-3x text-primary"></i></spam>
+                 <spam style="margin:10px;">
+                    <?php if(!$hayPresentacion){
+                        echo Html::submitButton('<i class="fa fa-search fa-2x"></i>', ['class' => 'btn btn-success']);
+                        
+                    }else{
+                         echo Html::submitButton('<i class="fa fa-close fa-2x"></i>', ['class' => 'btn btn-danger','onclick'=>'$("#inlineFormInputGroupUsername2").val("");']);
+                    } ?>
+                 </spam>
+                 
                   </div>
                 </div>
-              </div>
-              <div class="col-md-6 text-right"><a class="btn text-uppercase w-25 btn-success text-right" href="#">
-                  <h6> <i class="fa fa-plus fa-2x"></i>&nbsp;Agregar</h6>
-                </a></div>
+               
+                <div class="col-md-5 text-right">
+                    <?php if(!$hayPresentacion){?>
+                      <a class="btn text-uppercase w-25 btn-success text-center" href="index.php?r=presentacion/create" target="_blank">
+                        <h6> <i class="fa fa-plus fa-2x"></i>&nbsp;Agregar</h6>
+                      </a>
+                   <?php }  ?> 
+                    
+                </div>
             </div>
-              
-    <div class="form-group">
-         <?php if(!$hayPresentacion){ echo Html::submitButton('Save', ['class' => 'btn btn-success']);} ?>
-    </div>
+
 
           </div>
         </div>
@@ -108,78 +107,94 @@ if(isset($stockData->codigo)){
     </div>
   </div>
     
-    
-    <div class="py-2">
-    <div class="container">
+  <?php ActiveForm::end(); ?>   
+
+
       <div class="row">
         <div class="col-md-12" style="">
           <div class="card border border-primary">
             <div class="card-header bg-primary text-light">
               <h3 > Descripción</h3>
             </div>
+
             <div class="card-body">
-              <div class="row">
-                  <?php 
-                  if($model){?>
-                        <div class="col-md-3" style=""><img class="img-fluid d-block justify-content-center align-items-center w-100" src="<?= Html::encode($model->foto); ?>" width="150px"></div>
-                     <div class="col-md-9" style="">
-                       <h4> <?= Html::encode($model->producto->nombre); ?></h4>
-                        <h6><?= Html::encode($model->marca->nombre); ?></h6>
-                       <p> <?= Html::encode($model->descripcion); ?> </p>
-                       <h5 class="py-1">Costo:$<?= Html::encode($model->costo); ?></h5>
-                       <h5 class="py-1">ganancia:$<?= Html::encode($model->costo); ?></h5>
-                       <h5 class="py-1">Precio de venta:$<?= Html::encode($model->precioSugerido); ?></h5>
-                     </div>
-               <?php   }else{ ?>
-                  
-                   <div class="col-md-3" style=""><img class="img-fluid d-block justify-content-center align-items-center w-100" src="" width="150px"></div>
-                     <div class="col-md-9" style="">
-                       <h4> sin dato</h4>
-                        <h6>sin datos</h6>
-                       <p> sin datos</p>
-                       <h5 class="py-1">Costo:$0,00</h5>
-                       <h5 class="py-1">ganancia:$0,00</h5>
-                       <h5 class="py-1">Precio de venta:$0,00</h5>
-                     </div>
-                
-               <?php }; ?>
- 
-      <?php if(!$hayPresentacion){  ActiveForm::end();} ?>
-              </div>
-              <div class="col-md-12 text-right my-1"><a class="btn text-uppercase mr-3 w-25 btn-light border border-primary" href="#">
-                  <h6 class="text-primary"> <i class="fa fa-fw fa-pencil fa-2x"></i>&nbsp;Modificar</h6>
-                </a></div>
+                  <div class="row">
+                      <?php if ($model) { ?>
+                          <div class="col-md-3" style=""><img class="img-fluid d-block justify-content-center align-items-center " src="<?= Html::encode($model->foto); ?>" height="100px"></div>
+                          <div class="col-md-9" style="">
+                              <h4> <?= Html::encode($model->producto->nombre); ?></h4>
+                              <h6><?= Html::encode($model->marca->nombre); ?></h6>
+                              <p> <?= Html::encode($model->descripcion); ?> </p>
+                              <h5 class="py-1">Costo:$<?= Html::encode($model->costo); ?></h5>
+                              <h5 class="py-1">ganancia:$<?= Html::encode($model->costo); ?></h5>
+                              <h5 class="py-1">Precio de venta:$<?= Html::encode($model->precioSugerido); ?></h5>
+                              <a class="btn text-uppercase mr-3 w-25 btn-light border border-primary" href="#">
+                                  <h6 class="text-primary"> <i class="fa fa-fw fa-pencil fa-2x"></i>&nbsp;Modificar</h6>
+                              </a>
+                          </div>
+                      <?php } else { ?>
+
+                          <div class="col-md-3" style=""><img class="img-fluid d-block justify-content-center align-items-center w-100" src="" width="150px"></div>
+                          <div class="col-md-9" style="">
+                              <h4>sin dato</h4>
+                              <h6>sin datos</h6>
+                              <p> sin datos</p>
+                              <h5 class="py-1">Costo:$0,00</h5>
+                              <h5 class="py-1">ganancia:$0,00</h5>
+                              <h5 class="py-1">Precio de venta:$0,00</h5>
+                          </div>
+
+                      <?php }; ?>
+
+
+                  </div>
+
             </div>
-            <div class="row m-2">
-              <div class="col-md-12">
-              </div>
-            </div>
+            
+         
+             <?php
+             $form = ActiveForm::begin([
+                         'id' => 'updateStock-form',
+                         'method' => 'post',
+                         'action' => Url::to(['presentacion/update-stock'])
+             ]);
+             ?>
             <div class="row m-2">
               <div class="col-md-3">
                 <h1 class="">Cantidad</h1>
               </div>
- 
+             
+                
               <div class="col-md-9">
                 <div class="input-group mb-2 mr-sm-2 input-group-lg">
-                     <?= $formup->field($stockData ,'cantidad')->textInput(['class'=>'form-control-lg','placeholder'=>'0,00','style'=>'font-size:24px; disabled:"'.$cantidadActivar.'"','value'=>'1', 'autofocus'=>$focoCantidad,'onfocus'=>'this.select()','onkeeyup'=>'enterCantidad(event);'])->label('Buscar:') ?> 
-                     <?= $formup->field($stockData ,'codigo')->hiddenInput()->label(false);?>
-                  
+             
+                     <?= $form->field($stockData ,'cantidad')->textInput(['class'=>'form-control-lg','placeholder'=>'0,00','style'=>'font-size:24px; disabled:"'.$cantidadActivar.'"','disabled'=>!$hayPresentacion,'value'=>'1', 'autofocus'=>$focoCantidad,'onfocus'=>'this.select()','onkeeyup'=>'enterCantidad(event);'])->label('Buscar:') ?> 
+                     <?= $form->field($stockData ,'codigoProducto')->hiddenInput(['value'=> $stockData->codigoProducto])->label(false);?>
+                    <?= $form->field($stockData ,'numeroComprobante')->hiddenInput(['value'=> $stockData->numeroComprobante])->label(false);?>
 <!--                    <input type="number" class="form-control-lg" id="numCantidad" placeholder="0,00" style="" value="1" autofocus onfocus="this.select();" onkeyup="enterCantidad(event);">-->
-                  <div class="input-group-prepend">
-                    <div class="input-group-text bg-primary text-light ml-1 px-2">
-                      <i class="fa fa-calculator fa-lg text-light "></i>
-                    </div>
-                  </div>
+               
+    
+                 <spam style="margin:10px;"><i class="fa fa-calculator fa-3x text-primary"></i></spam>
+                 <spam style="margin:10px;">
+                    <?php if(!$hayPresentacion){
+                        echo Html::submitButton('<i class="fa fa-save fa-2x"></i> Guardar', ['class' => 'btn btn-success','disabled'=>!$hayPresentacion]);
+                        
+                    }else{
+                         echo Html::submitButton('<i class="fa fa-save fa-2x"></i>', ['class' => 'btn btn-success','onclick'=>'']);
+                    } ?>
+                 </spam>
+                    
+                    
                 </div>
               </div>
-                 <div class="form-group">
-                    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-                </div>
+
             </div>
+           <?php ActiveForm::end(); ?>   
+              
           </div>
         </div>
       </div>
-    </div>
+
         <script>
             
 
@@ -190,23 +205,22 @@ if(isset($stockData->codigo)){
                     if (e.which == enterKey){
                         
                         //document.location.href='index.php?r=precentacion/update-stock';
-                        $('#update-form').yiiActiveForm('submitForm');
+                        $('#updateStock-form').yiiActiveForm('submitForm');
                     }
             }
         </script>
-    
-  </div>  
+
     
      <!-- .................................................................-->
 
 
-    <?php ActiveForm::end(); ?>
+ 
 
 </div>
  <?php
 $script = <<< JS
     jQuery(document).ready(function($) {
-                    $(".spress-form").submit(function(event) {
+                    $(".spress-form000").submit(function(event) {
                          event.preventDefault(); // stopping submitting
                          var data = $(this).serializeArray();
                          var url = $(this).attr('action');

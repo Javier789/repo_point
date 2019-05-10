@@ -5,7 +5,6 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Presentacion */
-/* @var $searchModel app\models\PresentacionSearch */
 /* @var $stockData  app\models\FormEpressPresentacion*/
 
 $this->title = 'Create Presentacion';
@@ -18,7 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?=
     $this->render('_form_spress', [
         'model' => $model,
-        'searchModel' => $searchModel,
         'stockData'=>$stockData
 
             

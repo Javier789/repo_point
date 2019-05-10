@@ -34,7 +34,7 @@ $marcas = app\models\Marca::find()
                     <div class="blockquote">
                         <div class="form-group">
                             <label for="exampleFormControlSelect1"></label>
-                            <?= $form->field($model, 'idProducto')->dropDownList($producto, ['class' => 'form-control-lg my-1 text-primary', 'style' => 'font-size:24px'])->label(false) ?>
+                            <?= $form->field($model, 'idProducto')->dropDownList($producto, ['prompt'=>'--Seleccione--','class' => 'form-control-lg my-1 text-primary', 'style' => 'font-size:24px'])->label(false) ?>
                         </div>
                         <div class="form-group">
                             <label for="inlineFormInputGroupUsername2">Código de barra</label>
@@ -70,7 +70,7 @@ $marcas = app\models\Marca::find()
                             </div>
                             <div class="col-md-7">
 
-                                <?= $form->field($model, 'idMarca')->dropDownList($marcas, ['class' => 'form-control-lg my-1 text-primary', 'style' => 'font-size:24px'])->label(false) ?>
+                                <?= $form->field($model, 'idMarca')->dropDownList($marcas, ['prompt'=>'--Seleccione--','class' => 'form-control-lg my-1 text-primary', 'style' => 'font-size:24px'])->label(false) ?>
                             </div>
                         </div>  
                         <div class="row m-2">
