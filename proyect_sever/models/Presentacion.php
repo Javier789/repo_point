@@ -89,7 +89,7 @@ class Presentacion extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getStock() {
-        return $this->hasMany(Stock::className(), ['idPresentacion' => 'codigoProducto']);//, 'idMarca' => 'idMarca'
+        return $this->hasMany(Stock::className(), ['idPresentacion' => 'codigoProducto']); //, 'idMarca' => 'idMarca'
     }
 
     public function updateStock($cantidad) {
@@ -97,5 +97,9 @@ class Presentacion extends \yii\db\ActiveRecord {
         $stock->agregarUnidades($cantidad);
     }
 
+    public function delete() {
+        $this->activo = false;
+        $this->save();
+    }
 
 }
