@@ -98,7 +98,7 @@ class Presentacion extends \yii\db\ActiveRecord {
     }
 
     public function delete() {
-        $this->activo = false;
+        $this->activo = 0;
         $this->save();
     }
 
