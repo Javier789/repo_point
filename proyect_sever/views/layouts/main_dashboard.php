@@ -63,6 +63,15 @@ $this->title = 'Point soliciones en accesorios';
 
                     </li>
                     <li class="has-subnav">
+                        <a href="index.php?r=presentacion/update-spress">
+                            <i class="fa fa-shopping-basket fa-2x"></i>
+                            <span class="nav-text">
+                                Entrada de Mercaderia
+                            </span>
+                        </a>
+
+                    </li>
+                    <li class="has-subnav">
                         <a href="index.php?r=ruta">
                             <i class="fa fa-map-signs fa-2x"></i>
                             <span class="nav-text">
