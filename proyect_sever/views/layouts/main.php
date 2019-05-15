@@ -35,7 +35,7 @@ $this->title='Point soliciones en accesorios';
 <div class="wrap">
   <nav class="navbar navbar-expand-md navbar-dark bg-primary">
     <div class="container"> <a class="navbar-brand" href="#">
-        <img class="img-fluid d-block" src="../img/logo_point_blanco.svg" width="102px">
+        <img class="img-fluid d-block" src="img/logo_point_blanco.svg" width="102px">
       </a> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbar16">
         <span class="navbar-toggler-icon"></span>
       </button>

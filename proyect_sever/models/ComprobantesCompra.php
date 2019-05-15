@@ -69,7 +69,7 @@ class ComprobantesCompra extends \yii\db\ActiveRecord
         return $this->hasMany(Presentacione::className(), ['codigoProducto' => 'idPresentacion'])->viaTable('DetallesComporbante', ['idComprobante' => 'id']);
     }
     
-    public function agregarDetalle(int $cantidadProductos, int $codigo)
+    public function agregarDetalle( $cantidadProductos, $codigo)
     {
         $detalle = new DetalleComprobante();
         $detalle->idComprobante = $this->id;

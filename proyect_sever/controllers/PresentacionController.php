@@ -16,11 +16,12 @@ use yii\filters\AccessControl;
  * PresentacionController implements the CRUD actions for Presentacion model.
  */
 class PresentacionController extends Controller {
-
+    public $layout = 'main_dashboard';
     /**
      * {@inheritdoc}
      */
     public function behaviors() {
+       
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -46,7 +47,7 @@ class PresentacionController extends Controller {
      */
     public function actionIndex() {
 
-        $this->layout = "main_dashboard"; //
+        
 
         $searchModel = new PresentacionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -142,6 +143,7 @@ class PresentacionController extends Controller {
         $this->findModel($codigoProducto)->delete();
         return $this->redirect(['index']);
     }
+    
 
     /**
      * Accion que actualiza el stock de los productos

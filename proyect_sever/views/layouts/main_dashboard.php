@@ -49,7 +49,7 @@ $this->title = 'Point soliciones en accesorios';
                         <a href="index.php?r=site/index">
                              <i class="fa fa-home fa-2x"></i>
                             <span class="nav-text">
-                                <img class="img-fluid d-block" src="../img/logo_point_blanco.svg" width="102px">
+                                <img class="img-fluid d-block" src="img/logo_point_blanco.svg" width="102px">
                             </span>
                         </a>
                     </li>
@@ -58,6 +58,15 @@ $this->title = 'Point soliciones en accesorios';
                             <i class="fa fa-product-hunt fa-2x"></i>
                             <span class="nav-text">
                                 Productos
+                            </span>
+                        </a>
+
+                    </li>
+                    <li class="has-subnav">
+                        <a href="index.php?r=presentacion/update-spress">
+                            <i class="fa fa-shopping-basket fa-2x"></i>
+                            <span class="nav-text">
+                                Entrada de Mercaderia
                             </span>
                         </a>
 

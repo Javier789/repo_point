@@ -2,9 +2,10 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use consynki\yii\input\ImageInput;
 use yii\helpers\Url;
-use yii\base\DynamicModel;
+use yii\data\ActiveDataProvider;
+use yii\grid\GridView ;
+	
 
 
 /* @var $this yii\web\View */
@@ -16,6 +17,12 @@ $cantidadActivar='true';
 $focoNumComp=false;
 $focoCodigoBarra=false;
 $focoCantidad=false;
+$listArticuloComprobante=new ActiveDataProvider([
+            'query' => \app\models\Presentacion::find()->where(['activo' => 1])->orderBy('codigoProducto DESC'),
+            'pagination' => [
+                'pageSize' => 8,
+            ],
+        ]);
 
 
 if(isset($stockData->codigoProducto)){
@@ -89,13 +96,26 @@ if(isset($stockData->codigoProducto)){
                  
                   </div>
                 </div>
-               
                 <div class="col-md-5 text-right">
                     <?php if(!$hayPresentacion){?>
-                      <a class="btn text-uppercase w-25 btn-success text-center" href="index.php?r=presentacion/create" target="_blank">
+                      <a class="btn text-uppercase  btn-success text-center" href="index.php?r=presentacion/create" target="_blank">
                         <h6> <i class="fa fa-plus fa-2x"></i>&nbsp;Agregar</h6>
-                      </a>
-                   <?php }  ?> 
+                      </a> 
+                    <?php  }else{
+                        if($model->activo===0){?>
+                      <div class="row">
+                          <div class="col-md-6">
+                              <p>Éste articulo está dado de baja, esos significa que lo estará disponibles, para poder activarlos haga click en el boton Activar </p>
+                          </div>
+                          <div class="col-md-6">
+                              <a class="btn text-uppercase  btn-success text-center" href="#" >
+                                <h6> <i class="fa fa-check fa-2x"></i>&nbsp;Activar</h6>
+                              </a>
+                          </div>
+                      </div>
+                      
+                  <?php }
+                    }?> 
                     
                 </div>
             </div>
@@ -111,7 +131,7 @@ if(isset($stockData->codigoProducto)){
 
 
       <div class="row">
-        <div class="col-md-12" style="">
+        <div class="col-md-6" style="">
           <div class="card border border-primary">
             <div class="card-header bg-primary text-light">
               <h3 > Descripción</h3>
@@ -167,7 +187,7 @@ if(isset($stockData->codigoProducto)){
                 
               <div class="col-md-9">
                 <div class="input-group mb-2 mr-sm-2 input-group-lg">
-             
+           
                      <?= $form->field($stockData ,'cantidad')->textInput(['class'=>'form-control-lg','placeholder'=>'0,00','style'=>'font-size:24px; disabled:"'.$cantidadActivar.'"','disabled'=>!$hayPresentacion,'value'=>'1', 'autofocus'=>$focoCantidad,'onfocus'=>'this.select()','onkeeyup'=>'enterCantidad(event);'])->label('Buscar:') ?> 
                      <?= $form->field($stockData ,'codigoProducto')->hiddenInput(['value'=> $stockData->codigoProducto])->label(false);?>
                     <?= $form->field($stockData ,'numeroComprobante')->hiddenInput(['value'=> $stockData->numeroComprobante])->label(false);?>
@@ -193,7 +213,31 @@ if(isset($stockData->codigoProducto)){
               
           </div>
         </div>
-      </div>
+          
+          <!-- LISTA-->
+        <div class="col-md-6" style="">
+            <div class="card border border-primary" style="height:100%">
+                <div class="card-header bg-primary text-light text-center">
+                    <h3 > Articulos del comprobante registrados</h3>
+                </div>
+
+                <div class="card-body">
+
+                    <?=
+                    GridView::widget([
+                        'dataProvider' => $listArticuloComprobante,
+                        'columns' => [
+                            'codigoProducto',
+                            'descripcion',
+                            'precioSugerido',
+                        ],
+                    ]);
+                    ?>
+                </div>
+            </div>  
+        </div>  
+
+     
 
         <script>
             
