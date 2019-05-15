@@ -34,7 +34,7 @@ $marcas = app\models\Marca::find()
                     <div class="blockquote">
                         <div class="form-group">
                             <label for="exampleFormControlSelect1"></label>
-                            <?= $form->field($model, 'idProducto')->dropDownList($producto, ['prompt'=>'--Seleccione--','class' => 'form-control-lg my-1 text-primary', 'style' => 'font-size:24px'])->label(false) ?>
+                            <?= $form->field($model, 'idProducto')->dropDownList($producto, ['prompt' => '--Seleccione--', 'class' => 'form-control-lg my-1 text-primary', 'style' => 'font-size:24px'])->label(false) ?>
                         </div>
                         <div class="form-group">
                             <label for="inlineFormInputGroupUsername2">Código de barra</label>
@@ -62,7 +62,7 @@ $marcas = app\models\Marca::find()
                         </div>
                         <div class="card-body">
                             <h4> Descripción del producto </h4>
-                            <?= $form->field($model, 'descripcion')->textarea(['type'=>'textarea','maxlength' => true, 'class' => 'form-control-lg my-1 text-primary', 'style' => 'font-size:12px'])->label(false) ?>
+                            <?= $form->field($model, 'descripcion')->textarea(['type' => 'textarea', 'maxlength' => true, 'class' => 'form-control-lg my-1 text-primary', 'style' => 'font-size:12px'])->label(false) ?>
                         </div>
                         <div class="row m-2">
                             <div class="col-md-5">
@@ -70,7 +70,7 @@ $marcas = app\models\Marca::find()
                             </div>
                             <div class="col-md-7">
 
-                                <?= $form->field($model, 'idMarca')->dropDownList($marcas, ['prompt'=>'--Seleccione--','class' => 'form-control-lg my-1 text-primary', 'style' => 'font-size:24px'])->label(false) ?>
+                                <?= $form->field($model, 'idMarca')->dropDownList($marcas, ['prompt' => '--Seleccione--', 'class' => 'form-control-lg my-1 text-primary', 'style' => 'font-size:24px'])->label(false) ?>
                             </div>
                         </div>  
                         <div class="row m-2">
@@ -167,9 +167,11 @@ $marcas = app\models\Marca::find()
                     </div>
                     <div class="row align-items-center">
                         <div class="col-md-12">
-                            <img class="img-fluid d-block w-75 justify-content-center align-items-center" src="<?= Html::encode($model->foto); ?>">
-                            <?= $form->field($model, 'foto')->fileInput() ?>
-
+                            <?=
+                            $form->field($model, 'foto')->fileInput()->widget(ImageInput::className(), [
+                                'value' => '/img/current-image.png', //Optional current value
+                            ]);
+                            ?>
                         </div>
                     </div>
                     <div class="row">
@@ -188,15 +190,18 @@ $marcas = app\models\Marca::find()
 </div>
 
 <script>
-
     var app = angular.module('myApp', []);
     app.controller('myCtrl', function ($scope) {
-        $scope.ganancia = <?= $model->ganancia? $model->ganancia : 0 ?>;
-        $scope.precioSugerido = <?= $model->precioSugerido? $model->precioSugerido : 0 ?>;
-        $scope.costo = <?= $model->costo? $model->costo : 0 ?>;
+        $scope.ganancia = <?= $model->ganancia ? $model->ganancia : 0 ?>;
+        $scope.precioSugerido = <?= $model->precioSugerido ? $model->precioSugerido : 0 ?>;
+        $scope.costo = <?= $model->costo ? $model->costo : 0 ?>;
         $scope.gananciaSocio = $scope.precioSugerido - ($scope.ganancia + $scope.costo);
         $scope.calculo = function () {
             $scope.precioSugerido = $scope.ganancia + $scope.gananciaSocio + $scope.costo;
+        }
+        $scope.onFileChange = function (event) {
+            $scope.imagen = event.target.files;
+            console.log(event);
         }
     });
 </script>

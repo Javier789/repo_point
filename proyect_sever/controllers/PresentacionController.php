@@ -68,7 +68,9 @@ class PresentacionController extends Controller {
             $model->load(Yii::$app->request->post());
             //return var_dump(UploadedFile::getInstance($model, 'foto'));
             $file = UploadedFile::getInstance($model, 'foto');
+            
             if ($file) {
+                \app\models\ImageManager::transformImage($Input, $Foto, true , 470, 470 , $file->type, $file);
                 $model->setAttribute('foto', 'data:' . $file->type . ';base64,' . base64_encode(file_get_contents($file->tempName)));
             }
             if ($model->save()) {
@@ -94,7 +96,9 @@ class PresentacionController extends Controller {
     public function actionUpdate($codigoProducto) {
         $model = $this->findModel($codigoProducto);
         $fotoActual = $model->foto;
+        
         if (Yii::$app->request->post()) {
+            
             $model->load(Yii::$app->request->post());
             if (UploadedFile::getInstance($model, 'foto')) {
                 $file = UploadedFile::getInstance($model, 'foto');
