@@ -8,7 +8,6 @@ class ImageManager {
 
     /**
      * 
-     * @param type $Input
      * @param boolean $miniatura
      * @param type $AnchoMax
      * @param type $AltoMax
@@ -16,24 +15,8 @@ class ImageManager {
      * @param image $ImagenOriginal
      * @return type
      */
-    static function transformImage($Input, $miniatura, $AnchoMax, $AltoMax, $Extension, $ImagenOriginal) {
-        $Respuesta = array();
-        //$NombreOriginal = basename($_FILES[$Input]['name']);
-        //$Extension = pathinfo($NombreOriginal, PATHINFO_EXTENSION);
-
-        //if ($Foto != '') { //Si el nombre esta vacio uso el orginal
-          //  $Nombre = $Foto . '.' . $Extension;
-        //} else {
-        //    $Nombre = $_FILES[$Input]['name'];
-        //}
-
-//Ruta de los archivos
-        //$ImagenOriginal = $Ruta . basename($Nombre);
-        //$ImagenMini = $Ruta . "Mini_" . basename($Nombre);
-
-//Subo la imagen
-        if ( $ImagenOriginal) 
-            {
+    static function transformImage($miniatura, $AnchoMax, $AltoMax, $Extension, $ImagenOriginal) {
+        if ($ImagenOriginal) {
             //redimensiono la imagen si es demasiado grande.
             if ($Extension == "image/jpg" || $Extension == "image/jpeg") {
                 $ImagenGrande = imagecreatefromjpeg($ImagenOriginal);
@@ -67,12 +50,38 @@ class ImageManager {
 
             if ($Extension == "image/jpg" || $Extension == "image/jpeg") {
                 imagejpeg($ImagenNueva, $ImagenOriginal, 100);
+                ob_start();
+
+                imagejpeg($ImagenNueva);
+                $image_data = ob_get_contents();
+
+                ob_end_clean();
+
+                $image_data_base64 = "data:image/jpeg;base64," . base64_encode($image_data);
+                return $image_data_base64;
             } elseif ($Extension == "image/png") {
                 imagepng($ImagenNueva, $ImagenOriginal, 100);
+                ob_start();
+
+                imagepng($ImagenNueva);
+                $image_data = ob_get_contents();
+
+                ob_end_clean();
+
+                $image_data_base64 = "data:image/jpeg;base64," . base64_encode($image_data);
+                return $image_data_base64;
             } elseif ($Extension == "image/gif") {
                 imagegif($ImagenNueva, $ImagenOriginal, 100);
-            }
+                ob_start();
 
+                imagegif($ImagenNueva);
+                $image_data = ob_get_contents();
+
+                ob_end_clean();
+
+                $image_data_base64 = "data:image/jpeg;base64," . base64_encode($image_data);
+                return $image_data_base64;
+            }
             if ($miniatura) { //creo la miniatura
                 $Miniatura = imagecreatetruecolor($Mininuevax, $Mininuevay);
                 imagecopyresized($Miniatura, $ImagenGrande, 0, 0, 0, 0, floor($Mininuevax), floor($Mininuevay), $x, $y);
@@ -87,12 +96,7 @@ class ImageManager {
                 imagedestroy($Miniatura);
             }
         }
-        else {
-            $Respuesta['Script'] .= "Alerta(Ocurrió un error al subir la imagen.','error',3000);";
-        }
-//imagedestroy($ImagenRedimensionada);
-        $Respuesta['Script'] .= "Alerta('La imagen se ha optimizado correctamente.','success',3000);";
-        return json_encode($Respuesta);
+        return "data:image/jpeg;base64,";
     }
 
 }

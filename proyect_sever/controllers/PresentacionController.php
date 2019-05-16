@@ -16,17 +16,19 @@ use yii\filters\AccessControl;
  * PresentacionController implements the CRUD actions for Presentacion model.
  */
 class PresentacionController extends Controller {
+
     public $layout = 'main_dashboard';
+
     /**
      * {@inheritdoc}
      */
     public function behaviors() {
-       
+
         return [
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
-                    [
+                        [
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -47,7 +49,7 @@ class PresentacionController extends Controller {
      */
     public function actionIndex() {
 
-        
+
 
         $searchModel = new PresentacionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -67,12 +69,10 @@ class PresentacionController extends Controller {
         $model = new Presentacion();
         if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
-            //return var_dump(UploadedFile::getInstance($model, 'foto'));
             $file = UploadedFile::getInstance($model, 'foto');
-            
             if ($file) {
-                \app\models\ImageManager::transformImage($Input, $Foto, true , 470, 470 , $file->type, $file);
-                $model->setAttribute('foto', 'data:' . $file->type . ';base64,' . base64_encode(file_get_contents($file->tempName)));
+                $imagenComprimidaBase64 = \app\models\ImageManager::transformImage(false, 470, 470, $file->type, $file->tempName);
+                $model->setAttribute('foto', $imagenComprimidaBase64);
             }
             if ($model->save()) {
                 $stock = new \app\models\Stock();
@@ -97,13 +97,13 @@ class PresentacionController extends Controller {
     public function actionUpdate($codigoProducto) {
         $model = $this->findModel($codigoProducto);
         $fotoActual = $model->foto;
-        
+
         if (Yii::$app->request->post()) {
-            
             $model->load(Yii::$app->request->post());
             if (UploadedFile::getInstance($model, 'foto')) {
                 $file = UploadedFile::getInstance($model, 'foto');
-                $model->setAttribute('foto', 'data:' . $file->type . ';base64,' . base64_encode(file_get_contents($file->tempName)));
+                $imagenComprimidaBase64 = \app\models\ImageManager::transformImage(false, 470, 470, $file->type, $file->tempName);
+                $model->setAttribute('foto', $imagenComprimidaBase64);
             } else {
                 $model->foto = $fotoActual;
             }
@@ -143,7 +143,6 @@ class PresentacionController extends Controller {
         $this->findModel($codigoProducto)->delete();
         return $this->redirect(['index']);
     }
-    
 
     /**
      * Accion que actualiza el stock de los productos
@@ -152,7 +151,7 @@ class PresentacionController extends Controller {
     public function actionUpdateStock() {
 
         $dataStock = new FormEpressPresentacion();
-        
+
         //
         if (Yii::$app->request->post()) {
             $dataStock->load(Yii::$app->request->post());
@@ -167,10 +166,10 @@ class PresentacionController extends Controller {
 
         if ($model) {
             $model->updateStock($dataStock->cantidad);
-            
+
             $dataStock->cantidad = 1;
             $dataStock->codigoProducto = null;
-            return $this->render('update-spress',[
+            return $this->render('update-spress', [
                         'model' => null,
                         'stockData' => $dataStock
             ]);
