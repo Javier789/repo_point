@@ -124,11 +124,7 @@ echo Yii::$app->user->isGuest ? (
             </nav>
 
         </div>
-        <footer class="footer">
-            <div class="container">
-                <p class="pull-right">&copy; Ties <?= date('Y') ?></p>
-            </div>
-        </footer>
+
 
 <?php $this->endBody() ?>
     </body>
