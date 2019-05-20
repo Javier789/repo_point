@@ -179,14 +179,12 @@ $marcas = app\models\Marca::find()
                     </div>
                     <div class="row align-items-center">
                         <div class="col-md-12">
-                            <img class="img-fluid d-block w-75 justify-content-center align-items-center" src="<?= Html::encode($model->foto); ?>">
-
                             <?=
                                     $form->field($model, 'foto')
                                     ->fileInput(
                                                 ['name' => 'file', 'class' => 'inputfile'])
                                     ->widget(ImageInput::className(), [
-                                        'value' => '/img/current-image.png', //Optional current value
+                                        'value' =>  $model->foto ? $model->foto : '/img/current-image.png', //Optional current value
                             ]);
                             ?>
 
