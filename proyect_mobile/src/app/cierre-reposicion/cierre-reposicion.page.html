@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cierre de Reposicion</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <b>Socio</b>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+          <ion-col>
+            Razon social
+          </ion-col>
+        </ion-row>
+      <ion-row>
+        <ion-col>
+          <p><b>Fecha de Reposicion: </b> {{reposicion.fechaReposicion | date: 'dd/MM/yyyy'}}</p>
+        </ion-col>
+        <ion-col>
+          <p><b>Fecha de Cierre: </b> {{reposicion.fechaCierreReposicion | date: 'dd/MM/yyyy'}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+  </ion-item>
+  <ion-virtual-scroll [items]="detallesReposicion">
+    <ion-item *virtualItem="let item">
+      <ion-card>
+        <ion-card-header>
+          <ion-img style="height:100px;"
+            src="https://http2.mlstatic.com/auriculares-sennheiser-hd-407-abierto-hi-fi-estudio-dj-mp3-D_NQ_NP_983021-MLA30204664546_052019-Q.jpg">
+          </ion-img>
+          <ion-card-subtitle><b>Codigo: </b>{{item.presentacion.codigoProducto}}</ion-card-subtitle>
+          <ion-card-title>Auriculares</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <p>Precio de Venta {{item.precioVenta}}</p>
+          <ion-item>
+            <ion-label>Cant. Inicial</ion-label>
+            <ion-input disabled>{{item.cantidadInicial}}</ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>Cant. Actual</ion-label>
+            <ion-input type="number" [(ngModel)]="item.cantidadDiaReposicion"></ion-input>
+          </ion-item>
+          <p>Articulos Vendidos: {{item.cantidadInicial - item.cantidadDiaReposicion}}</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-virtual-scroll>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="menu"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="start">
+      <ion-fab-button>
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button> <!--Agregar una observacion-->
+          <ion-icon name="eye"></ion-icon> 
+        </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block">Siguiente</ion-button>
+  </ion-toolbar>
+</ion-footer>

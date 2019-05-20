@@ -10,11 +10,13 @@ use consynki\yii\input\ImageInput;
 $producto = app\models\Producto::find()
         ->select(['nombre'])
         ->indexBy('id')
+        ->orderBy('nombre')
         ->column();
 
 $marcas = app\models\Marca::find()
         ->select(['nombre'])
         ->indexBy('codigoEmpresa')
+        ->orderBy('codigoEmpresa')
         ->column();
 ?>
 
