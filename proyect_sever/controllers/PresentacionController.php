@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use app\models\FormEpressPresentacion;
 use yii\filters\AccessControl;
+use yii\data\ActiveDataProvider;
 
 /**
  * PresentacionController implements the CRUD actions for Presentacion model.
@@ -112,19 +113,31 @@ class PresentacionController extends Controller {
                     'model' => $model,
         ]);
     }
-
+    /**
+     * Accion para la carga de lista de compras
+     * @return type
+     */
     public function actionUpdateSpress() {
         $stockData = new FormEpressPresentacion();
         $stockData->load(Yii::$app->request->post());
         $dataProvider = Presentacion::findOne(['codigoProducto' => $stockData->codigoProducto]);
-
+        
+        
+        $listArticuloComprobante=new ActiveDataProvider([
+            'query' => \app\models\DetalleComprobante::find()->where(['idComprobante' => $stockData->numeroComprobante])->orderBy('idComprobante DESC'),
+            'pagination' => [
+                'pageSize' => 8,
+            ],
+        ]);
+   
         /* if ($model->load(Yii::$app->request->post()) && $model->save()) {
           return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
           } */
-
+        
         return $this->render('update-spress', [
                     'model' => $dataProvider,
-                    'stockData' => $stockData
+                    'stockData' => $stockData,
+                    'listArtComp' => $listArticuloComprobante
         ]);
     }
 
@@ -160,6 +173,13 @@ class PresentacionController extends Controller {
         }
 
         $model = Presentacion::findOne(['codigoProducto' => $dataStock->codigoProducto]);
+        
+        $listArticuloComprobante=new ActiveDataProvider([
+            'query' => \app\models\DetalleComprobante::find()->where(['idComprobante' => $dataStock->numeroComprobante])->orderBy('idComprobante DESC'),
+            'pagination' => [
+                'pageSize' => 8,
+            ],
+        ]);
 
         if ($model) {
             $model->updateStock($dataStock->cantidad);
@@ -168,7 +188,8 @@ class PresentacionController extends Controller {
             $dataStock->codigoProducto = null;
             return $this->render('update-spress',[
                         'model' => null,
-                        'stockData' => $dataStock
+                        'stockData' => $dataStock,
+                        'listArtComp' => $listArticuloComprobante
             ]);
         }
 

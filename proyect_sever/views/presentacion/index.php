@@ -34,9 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <span  style="position: absolute;right: 5px;">
                     <?= Html::a('Agregar', ['create'], ['class' => 'btn btn-success ', 'style' => 'font-size:1.5em;']) ?>
                 </span>
+ 
+             <?php ActiveForm::end() ?>
             </div>
-
-            <?php ActiveForm::end() ?>
         </div>
     </div>
 </div>

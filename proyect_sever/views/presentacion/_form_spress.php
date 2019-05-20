@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
-use yii\data\ActiveDataProvider;
 use yii\grid\GridView ;
 	
 
@@ -12,17 +11,14 @@ use yii\grid\GridView ;
 /* @var $model app\models\Presentacion */
 /* @var $form yii\widgets\ActiveForm */
 /* @var  $stockData app\models\FormEpressPresentacion */
+/* @var $listArtComp yii\data\ActiveDataProvider*/
+
 $hayPresentacion=false;
 $cantidadActivar='true';
 $focoNumComp=false;
 $focoCodigoBarra=false;
 $focoCantidad=false;
-$listArticuloComprobante=new ActiveDataProvider([
-            'query' => \app\models\Presentacion::find()->where(['activo' => 1])->orderBy('codigoProducto DESC'),
-            'pagination' => [
-                'pageSize' => 8,
-            ],
-        ]);
+
 
 
 if(isset($stockData->codigoProducto)){
@@ -225,11 +221,11 @@ if(isset($stockData->codigoProducto)){
 
                     <?=
                     GridView::widget([
-                        'dataProvider' => $listArticuloComprobante,
+                        'dataProvider' => $listArtComp,
                         'columns' => [
-                            'codigoProducto',
-                            'descripcion',
-                            'precioSugerido',
+                            'cantidad',
+                            'presentacione.descripcion',
+                            'presentacione.precioSugerido',
                         ],
                     ]);
                     ?>
