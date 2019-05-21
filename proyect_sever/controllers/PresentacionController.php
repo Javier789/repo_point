@@ -69,6 +69,7 @@ class PresentacionController extends Controller {
     public function actionCreate() {
         $model = new Presentacion();
         if (Yii::$app->request->post()) {
+            $transaction = \Yii::$app->db->beginTransaction();
             $model->load(Yii::$app->request->post());
             $file = UploadedFile::getInstance($model, 'foto');
             if ($file) {
@@ -78,7 +79,22 @@ class PresentacionController extends Controller {
             if ($model->save()) {
                 $stock = new \app\models\Stock();
                 $stock->setAttributes(['cantidad' => 0, 'fechaActualizacion' => date('Y-m-d'), 'idPresentacion' => $model->codigoProducto], true);
-                $stock->save();
+                if (!$stock->save()) {
+                    $transaction->rollBack();
+                    return $this->render('create', [
+                                'model' => $model,
+                    ]);
+                }
+                $categorias = \app\models\Categoria::find()->all();
+                foreach ($categorias as $categoria) {
+                    if (!$categoria->agregarDetalle($model->codigoProducto)) {
+                        $transaction->rollBack();
+                        return $this->render('create', [
+                                    'model' => $model,
+                        ]);
+                    }
+                }
+                $transaction->commit();
                 return $this->redirect(
                                 ['index']);
             }
@@ -117,6 +133,7 @@ class PresentacionController extends Controller {
                     'model' => $model,
         ]);
     }
+
     /**
      * Accion para la carga de lista de compras
      * @return type
@@ -125,19 +142,19 @@ class PresentacionController extends Controller {
         $stockData = new FormEpressPresentacion();
         $stockData->load(Yii::$app->request->post());
         $dataProvider = Presentacion::findOne(['codigoProducto' => $stockData->codigoProducto]);
-        
-        
-        $listArticuloComprobante=new ActiveDataProvider([
+
+
+        $listArticuloComprobante = new ActiveDataProvider([
             'query' => \app\models\DetalleComprobante::find()->where(['idComprobante' => $stockData->numeroComprobante])->orderBy('idComprobante DESC'),
             'pagination' => [
                 'pageSize' => 8,
             ],
         ]);
-   
+
         /* if ($model->load(Yii::$app->request->post()) && $model->save()) {
           return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
           } */
-        
+
         return $this->render('update-spress', [
                     'model' => $dataProvider,
                     'stockData' => $stockData,
@@ -176,8 +193,8 @@ class PresentacionController extends Controller {
         }
 
         $model = Presentacion::findOne(['codigoProducto' => $dataStock->codigoProducto]);
-        
-        $listArticuloComprobante=new ActiveDataProvider([
+
+        $listArticuloComprobante = new ActiveDataProvider([
             'query' => \app\models\DetalleComprobante::find()->where(['idComprobante' => $dataStock->numeroComprobante])->orderBy('idComprobante DESC'),
             'pagination' => [
                 'pageSize' => 8,
