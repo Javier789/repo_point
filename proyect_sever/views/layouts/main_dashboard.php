@@ -35,6 +35,9 @@ $this->title = 'Point soliciones en accesorios';
 
 
             <nav class="navbar navbar-expand-md navbar-dark bg-primary" style="margin-bottom:0px">
+            <button class="navbar-toggler navbar-toggler-right border-0" type="button" style="position: absolute" data-toggle="collapse" data-target="#navbar10">
+                <span class="navbar-toggler-icon"></span>
+              </button>
             </nav>
 
 
