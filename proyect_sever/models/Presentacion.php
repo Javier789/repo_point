@@ -21,6 +21,7 @@ use Yii;
  * @property Marca $marca
  * @property Producto $producto
  * @property Stock[] $stocks
+ * @property DetalleCategoria $detalleCategoria
  */
 class Presentacion extends \yii\db\ActiveRecord {
 
@@ -68,7 +69,13 @@ class Presentacion extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getDetallesComporbante() {
-        return $this->hasOne(DetallesComporbante::className(), ['idPresentacion' => 'codigoProducto', 'idMarca' => 'idMarca']);
+        return $this->hasOne(DetallesComporbante::className(), ['idPresentacion' => 'codigoProducto']);
+    }
+        /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDetallesCategoria() {
+        return $this->hasOne(DetalleCategoria::className(), ['idPresentacion' => 'codigoProducto']);
     }
 
     /**
