@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ListView::widget([
     'dataProvider' => $dataProvider,
     'itemView' => function ($model, $key, $index, $widget) {
-        return $this->render('_item_articulo', ['model' => $model, 'findText' => 'Al']);
+        return $this->render('_item_articulo_n', ['model' => $model, 'findText' => 'Al']);
     },
     // Customzing options for pager container tag
     'options' => [
