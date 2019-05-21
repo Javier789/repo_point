@@ -101,5 +101,12 @@ class Presentacion extends \yii\db\ActiveRecord {
         $this->activo = 0;
         $this->save();
     }
-
+    public function beforeSave($insert) {
+        $categorias = Categoria::find()->all();
+        foreach ( $categorias as $model )
+        {
+            $model->agregarDetalle($this->codigoProducto);
+        }
+        parent::beforeSave($insert);
+    }
 }
