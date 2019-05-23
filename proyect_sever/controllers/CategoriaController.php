@@ -106,7 +106,25 @@ class CategoriaController extends Controller {
                     'model' => $model,
         ]);
     }
-
+    
+    public function actionListaPrecios($id)
+    {
+        $query = \app\models\DetalleCategoria::find();
+        $model = \app\models\Presentacion::findOne(['codigoProducto'=>$id]);
+        $query->where(['idPresentacion'=>$id]);
+        $dataProvider = new \yii\data\ActiveDataProvider([
+            'query' => $query,
+        ]);
+        return $this->render('listaPrecios', [
+                    'dataProvider' => $dataProvider,
+                    'model' => $model
+        ]);
+    }
+        public function actionGuardarListaPrecios()
+    {
+        
+            var_dump(Yii::$app->request->post());
+    }
     /**
      * Deletes an existing Categoria model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

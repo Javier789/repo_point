@@ -64,6 +64,6 @@ class DetalleCategoria extends \yii\db\ActiveRecord
      */
     public function getPresentacion()
     {
-        return $this->hasOne(Presentacione::className(), ['codigoProducto' => 'idPresentacion']);
+        return $this->hasOne(Presentacion::className(), ['codigoProducto' => 'idPresentacion']);
     }
 }

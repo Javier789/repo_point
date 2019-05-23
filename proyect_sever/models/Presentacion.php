@@ -75,7 +75,7 @@ class Presentacion extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getDetallesCategoria() {
-        return $this->hasOne(DetalleCategoria::className(), ['idPresentacion' => 'codigoProducto']);
+        return $this->hasMany(DetalleCategoria::className(), ['idPresentacion' => 'codigoProducto']);
     }
 
     /**
