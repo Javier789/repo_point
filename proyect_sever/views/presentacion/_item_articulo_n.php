@@ -3,6 +3,8 @@
 // _list_item.php
 use yii\helpers\Html;
 use yii\helpers\Url;
+$categorias= app\models\DetalleCategoria::find()->where(['idPresentacion'=>$model->codigoProducto])->all();
+
 ?>
 <div class="row mt-2 border-bottom border-primary" >
     <div class="col-md-12">
@@ -58,24 +60,19 @@ use yii\helpers\Url;
    
         <div class="collapse" id="collapse_<?= Html::encode($model->codigoProducto); ?>" style="width: 100%;">
             <div class="card card-body">
+             <?php
+                $tbHead='<thead><tr>';
+                $tbBody='<tbody><tr>';
+                foreach ($categorias as $categoria){
+                    $tbHead.='<th scope="col">'.$categoria->categoria->nombre.'</th>';
+                    $tbBody.='<td><h4>'.$categoria->porcentajeGananciaSocio.'%</h4></td>';
+                }
+                 $tbHead.='</tr></thead>';
+                 $tbBody.='</tr></tbody>';
+             ?>
              <table class="table" >
-                <thead>
-                  <tr>
-                  
-                    <th scope="col">Categoria 1</th>
-                    <th scope="col">Categoria 2</th>
-                    <th scope="col">Categoria 3</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                   
-                      <td><h4>23%</h4></td>
-                    <td><h4>52%</h4></td>
-                    <td><h4>28%</h4></td>
-                  </tr>
-                  
-                </tbody>
+               <?=$tbHead?>
+               <?=$tbBody?>
               </table>
             </div>
     </div>
