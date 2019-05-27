@@ -109,20 +109,11 @@ class CategoriaController extends Controller {
     
     public function actionListaPrecios($id)
     {
-        $query = \app\models\DetalleCategoria::find();
-        $model = \app\models\Presentacion::findOne(['codigoProducto'=>$id]);
-        $query->where(['idPresentacion'=>$id]);
-        $dataProvider = new \yii\data\ActiveDataProvider([
-            'query' => $query,
-        ]);
-        return $this->render('listaPrecios', [
-                    'dataProvider' => $dataProvider,
-                    'model' => $model
-        ]);
+        return $this->render('listaPrecios');
     }
-        public function actionGuardarListaPrecios()
+
+    public function actionGuardarListaPrecios()
     {
-        
             var_dump(Yii::$app->request->post());
     }
     /**
