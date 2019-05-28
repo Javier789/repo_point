@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use consynki\yii\input\ImageInput;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Presentacion */
 /* @var $form yii\widgets\ActiveForm */
@@ -20,7 +21,7 @@ $marcas = app\models\Marca::find()
         ->column();
 ?>
 
-<div ng-app="myApp" ng-controller="myCtrl" class="presentacion-form" >
+<div class="presentacion-form"  ng-app="myApp" ng-controller="myCtrl">
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -92,18 +93,18 @@ $marcas = app\models\Marca::find()
                                             'placeholder' => '$0,00',
                                             'style' => 'font-size:16px',
                                             'ng-model' => 'costo',
-                                            'ng-change' => 'calculo()'
+                                            'step' => 'any'
                                         ])
                                         ->label(false)
                                 ?>
                             </div>
                         </div>
-                        <div class="row m-2">
+                        <!--<div class="row m-2">
                             <div class="col-md-5">
                                 <h5 class="py-2">Ganancia:</h5>
                             </div>
                             <div class="col-md-7">
-                                <?=
+                                
                                         $form->field($model, 'ganancia')
                                         ->textInput(
                                                 ['class' => 'form-control-lg',
@@ -114,7 +115,7 @@ $marcas = app\models\Marca::find()
                                                     'ng-change' => 'calculo()'
                                         ])
                                         ->label(false)
-                                ?> 
+                                 
                                 {{(ganancia / precioSugerido) * 100| number}} %
                             </div>
                         </div>
@@ -123,7 +124,7 @@ $marcas = app\models\Marca::find()
                                 <h5 class="py-2">Comision del Socio:</h5>
                             </div>
                             <div class="col-md-7">
-                                <?=
+                                
                                 yii\bootstrap\Html::input(
                                         'number', 'ganancia-socio', '', [
                                     'id' => 'ganancia-socio',
@@ -134,11 +135,11 @@ $marcas = app\models\Marca::find()
                                     'ng-model' => 'gananciaSocio',
                                     'ng-change' => 'calculo()'
                                 ])
-                                ?>
+                                
                                 <br>
                                 {{(gananciaSocio / precioSugerido)*100| number}} %
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row m-2">
                             <div class="col-md-3">
                                 <h5 class="py-2">Precio Sugerido:</h5>
@@ -152,7 +153,7 @@ $marcas = app\models\Marca::find()
                                                         'type' => 'number',
                                                         'placeholder' => '0,00',
                                                         'style' => 'font-size:16px',
-                                                        'ng-model' => 'precioSugerido'
+                                                        'step' => 'any'
                                             ])
                                             ->label(false)
                                     ?> 
@@ -165,7 +166,7 @@ $marcas = app\models\Marca::find()
 
                         <div class="col-md-9">
                             <div class="form-group">
-                                <?= Html::submitButton('GUARDAR', ['class' => 'btn btn-success', 'style' => 'font-size:1.5em']) ?>
+                                <?= Html::submitButton('GUARDAR', ['class' => 'btn btn-success', 'style' => 'font-size:1.5em', 'ng-click' => 'guardarCategorias()']) ?>
                             </div>
                         </div>
 
@@ -182,9 +183,9 @@ $marcas = app\models\Marca::find()
                             <?=
                                     $form->field($model, 'foto')
                                     ->fileInput(
-                                                ['name' => 'file', 'class' => 'inputfile'])
+                                            ['name' => 'file', 'class' => 'inputfile'])
                                     ->widget(ImageInput::className(), [
-                                        'value' =>  $model->foto ? $model->foto : '/img/current-image.png', //Optional current value
+                                        'value' => $model->foto ? $model->foto : '/img/current-image.png', //Optional current value
                             ]);
                             ?>
 
@@ -200,19 +201,79 @@ $marcas = app\models\Marca::find()
     </div>
     <!-- .................................................................-->
 
-<?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
+    <div>
+        <table class="table table-bordered table-responsive-md table-striped text-center">
+            <thead>
+                <tr>
+                    <th class="text-center">Categoria</th>
+                    <th class="text-center">Descripcion</th>
+                    <th class="text-center">Ganancia</th>
+                    <th class="text-center">Procentaje de Ganancia</th>
+                    <th class="text-center">Total a socio</th>
+                    <th class="text-center">Ganacia de Socio</th>
+                    <th class="text-center">% Ganacia de Socio</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="d in detalles">
+                    <td>{{d.nombreCategoria}}</td>
+                    <td>{{d.descripcionCategoria}}</td>
+                    <td><span style="padding: 1rem 5rem;" ng-keyup="changeValueMonto(d, $event)" contenteditable="true">{{d.monto}}</span></td>
+                    <td>{{d.monto * 100 / costo | number}}%</td>
+                    <td>{{d.monto + costo}}</td>
+                    <td>{{precioSugerido - (d.monto + costo)| number}}</td>
+                    <td>{{(precioSugerido - (d.monto + costo)) *100 / precioSugerido | number}}%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+
 
 <script>
 
     var app = angular.module('myApp', []);
-    app.controller('myCtrl', function ($scope) {
-        $scope.ganancia = <?= $model->ganancia ? $model->ganancia : 0 ?>;
-        $scope.precioSugerido = <?= $model->precioSugerido ? $model->precioSugerido : 0 ?>;
+    app.controller('myCtrl', function ($scope, $http) {
+        $http.get('http://localhost:8080/index.php?r=rest-lista-precios/index&id=5566')
+                .then(function (response) {
+                    $scope.detalles = response.data;
+                });
         $scope.costo = <?= $model->costo ? $model->costo : 0 ?>;
-        $scope.gananciaSocio = $scope.precioSugerido - ($scope.ganancia + $scope.costo);
-        $scope.calculo = function () {
-            $scope.precioSugerido = $scope.ganancia + $scope.gananciaSocio + $scope.costo;
-        }
+        $scope.precioSugerido = <?= $model->precioSugerido ? $model->precioSugerido : 0 ?>;
+        //$scope.cantidad = (document.getElementById('porcentajeGananciaSocio').value / 100) * $scope.precioSugerido;
+//        $scope.calculo = function (event) {
+//            var porcentajeGananciaSocio = event.target.value;
+//            $scope.cantidad = (porcentajeGananciaSocio / 100) * $scope.precioSugerido;
+//        };
+//        $scope.changeValue = function (d, event) {
+//            $scope.detalles.forEach(function (element) {
+//                if (element.idCategoria === d.idCategoria && element.idPresentacion === d.idPresentacion) {
+//                    if (event.target.textContent === "") {
+//                        element.porcentajeGananciaSocio = 0;
+//                    } else {
+//                        element.porcentajeGananciaSocio = event.target.textContent * 1;
+//                    }
+//                }
+//            });
+//        };
+        $scope.changeValueMonto = function (d, event) {
+            $scope.detalles.forEach(function (element) {
+                if (element.idCategoria === d.idCategoria && element.idPresentacion === d.idPresentacion) {
+                    console.log(event);
+                    if (event.target.textContent === "") {
+                        element.monto = 0;
+                    } else {
+                        element.monto = event.target.textContent * 1;
+                    }
+                }
+            });
+        };
+        $scope.guardarCategorias = function () {
+            $http.post('http://localhost:8080/index.php?r=rest-lista-precios/save', $scope.detalles).then(
+                    function (response) {
+                        console.log(response);
+                    });
+        };
     });
 </script>

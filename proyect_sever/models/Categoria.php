@@ -60,7 +60,7 @@ class Categoria extends \yii\db\ActiveRecord
         $detalle = new DetalleCategoria();
         $detalle->setAttribute('idCategoria', $this->idCategoria);
         $detalle->setAttribute('idPresentacion', $idPresentacion);
-        $detalle->setAttribute('porcentajeGananciaSocio', 20);
+        $detalle->setAttribute('monto', 20);
         return $detalle->save();
     }
    

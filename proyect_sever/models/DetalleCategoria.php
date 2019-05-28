@@ -9,8 +9,7 @@ use Yii;
  *
  * @property int $idCategoria
  * @property int $idPresentacion
- * @property double $porcentajeGananciaSocio
- *
+ * @property double $monto
  * @property Categorium $categoria
  * @property Presentacione $presentacion
  */
@@ -32,7 +31,7 @@ class DetalleCategoria extends \yii\db\ActiveRecord
         return [
             [['idCategoria', 'idPresentacion'], 'required'],
             [['idCategoria', 'idPresentacion'], 'integer'],
-            [['porcentajeGananciaSocio'], 'number'],
+            [['monto'], 'number'],
             [['idCategoria', 'idPresentacion'], 'unique', 'targetAttribute' => ['idCategoria', 'idPresentacion']],
             [['idCategoria'], 'exist', 'skipOnError' => true, 'targetClass' => Categoria::className(), 'targetAttribute' => ['idCategoria' => 'idCategoria']],
             [['idPresentacion'], 'exist', 'skipOnError' => true, 'targetClass' => Presentacion::className(), 'targetAttribute' => ['idPresentacion' => 'codigoProducto']],
@@ -47,7 +46,16 @@ class DetalleCategoria extends \yii\db\ActiveRecord
         return [
             'idCategoria' => 'Id Categoria',
             'idPresentacion' => 'Id Presentacion',
-            'porcentajeGananciaSocio' => 'Porcentaje Ganancia Socio',
+            'monto' => 'Porcentaje Ganancia Socio',
+        ];
+    }
+        public function fields() {
+        return[
+            'idCategoria',
+            'idPresentacion',
+            'monto',
+            'nombreCategoria' => function (){return $this->categoria->nombre ;},
+            'descripcionCategoria' => function (){return $this->categoria->descripcion ;}
         ];
     }
 

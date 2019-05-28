@@ -65,7 +65,7 @@ $categorias= app\models\DetalleCategoria::find()->where(['idPresentacion'=>$mode
                 $tbBody='<tbody><tr>';
                 foreach ($categorias as $categoria){
                     $tbHead.='<th scope="col">'.$categoria->categoria->nombre.'</th>';
-                    $tbBody.='<td><h4>'.$categoria->porcentajeGananciaSocio.'%</h4></td>';
+                    $tbBody.='<td><h4>'. (floatval($model->costo) + floatval($categoria->monto)) .'</h4></td>';
                 }
                  $tbHead.='</tr></thead>';
                  $tbBody.='</tr></tbody>';
