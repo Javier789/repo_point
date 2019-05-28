@@ -100,7 +100,7 @@ $this->title = 'Point soliciones en accesorios';
                         <a href="index.php?r=categoria">
                             <i class="fa fa-th-list"></i>
                             <span class="nav-text">
-                                Socios comerciales
+                                Listas de Precios
                             </span>
                         </a>
 
