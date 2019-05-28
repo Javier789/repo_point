@@ -207,17 +207,23 @@ $marcas = app\models\Marca::find()
             <thead>
                 <tr>
                     <th class="text-center">Categoria</th>
+                    <th class="text-center">Descripcion</th>
                     <th class="text-center">Ganancia</th>
                     <th class="text-center">Procentaje de Ganancia</th>
-                    <th class="text-center">Total</th>
+                    <th class="text-center">Total a socio</th>
+                    <th class="text-center">Ganacia de Socio</th>
+                    <th class="text-center">% Ganacia de Socio</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="d in detalles">
                     <td>{{d.nombreCategoria}}</td>
+                    <td>{{d.descripcionCategoria}}</td>
                     <td><span style="padding: 1rem 5rem;" ng-keyup="changeValueMonto(d, $event)" contenteditable="true">{{d.monto}}</span></td>
                     <td>{{d.monto * 100 / costo | number}}%</td>
                     <td>{{d.monto + costo}}</td>
+                    <td>{{precioSugerido - (d.monto + costo)| number}}</td>
+                    <td>{{(precioSugerido - (d.monto + costo)) *100 / precioSugerido | number}}%</td>
                 </tr>
             </tbody>
         </table>
@@ -234,6 +240,7 @@ $marcas = app\models\Marca::find()
                     $scope.detalles = response.data;
                 });
         $scope.costo = <?= $model->costo ? $model->costo : 0 ?>;
+        $scope.precioSugerido = <?= $model->precioSugerido ? $model->precioSugerido : 0 ?>;
         //$scope.cantidad = (document.getElementById('porcentajeGananciaSocio').value / 100) * $scope.precioSugerido;
 //        $scope.calculo = function (event) {
 //            var porcentajeGananciaSocio = event.target.value;

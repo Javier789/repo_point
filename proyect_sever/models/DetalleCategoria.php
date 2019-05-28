@@ -54,7 +54,8 @@ class DetalleCategoria extends \yii\db\ActiveRecord
             'idCategoria',
             'idPresentacion',
             'monto',
-            'nombreCategoria' => function (){return $this->categoria->nombre ;}
+            'nombreCategoria' => function (){return $this->categoria->nombre ;},
+            'descripcionCategoria' => function (){return $this->categoria->descripcion ;}
         ];
     }
 
