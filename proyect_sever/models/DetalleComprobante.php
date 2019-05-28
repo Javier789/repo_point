@@ -12,7 +12,7 @@ use Yii;
  * @property int $idComprobante
  *
  * @property ComprobantesCompra $comprobante
- * @property Presentacione $presentacion
+ * @property Presentacion $presentacione
  */
 class DetalleComprobante extends \yii\db\ActiveRecord
 {
@@ -35,7 +35,7 @@ class DetalleComprobante extends \yii\db\ActiveRecord
             [['cantidad'], 'number'],
             [['idPresentacion', 'idComprobante'], 'unique', 'targetAttribute' => ['idPresentacion', 'idComprobante']],
             [['idComprobante'], 'exist', 'skipOnError' => true, 'targetClass' => ComprobantesCompra::className(), 'targetAttribute' => ['idComprobante' => 'id']],
-            [['idPresentacion'], 'exist', 'skipOnError' => true, 'targetClass' => Presentacione::className(), 'targetAttribute' => ['idPresentacion' => 'codigoProducto']],
+            [['idPresentacion'], 'exist', 'skipOnError' => true, 'targetClass' => Presentacion::className(), 'targetAttribute' => ['idPresentacion' => 'codigoProducto']],
         ];
     }
 
@@ -64,6 +64,6 @@ class DetalleComprobante extends \yii\db\ActiveRecord
      */
     public function getPresentacion()
     {
-        return $this->hasOne(Presentacione::className(), ['codigoProducto' => 'idPresentacion']);
+        return $this->hasOne(Presentacion::className(), ['codigoProducto' => 'idPresentacion']);
     }
 }

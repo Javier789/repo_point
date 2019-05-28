@@ -13,7 +13,7 @@ use Yii;
  * @property string $fechaIngreso
  *
  * @property DetallesComporbante[] $detallesComporbantes
- * @property Presentacione[] $presentacions
+ * @property Presentacion[] $presentacions
  */
 class ComprobantesCompra extends \yii\db\ActiveRecord
 {
@@ -31,7 +31,7 @@ class ComprobantesCompra extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'tipoComprobante'], 'required'],
+            [['id'], 'required'],
             [['id'], 'integer'],
             [['fechaIngreso'], 'safe'],
             [['tipoComprobante'], 'string', 'max' => 50],
@@ -66,7 +66,7 @@ class ComprobantesCompra extends \yii\db\ActiveRecord
      */
     public function getPresentacions()
     {
-        return $this->hasMany(Presentacione::className(), ['codigoProducto' => 'idPresentacion'])->viaTable('DetallesComporbante', ['idComprobante' => 'id']);
+        return $this->hasMany(Presentacion::className(), ['codigoProducto' => 'idPresentacion'])->viaTable('DetallesComporbante', ['idComprobante' => 'id']);
     }
     
     public function agregarDetalle( $cantidadProductos, $codigo)

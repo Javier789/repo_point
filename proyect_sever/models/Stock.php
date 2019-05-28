@@ -63,5 +63,6 @@ class Stock extends \yii\db\ActiveRecord
         $this->cantidad = $this->cantidad + $cantidad;
         $this->fechaActualizacion = date("Y-m-d");
         $this->save();
+       
     }
 }

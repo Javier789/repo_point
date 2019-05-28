@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\grid\GridView ;
+use yii\data\ActiveDataProvider;
 	
 
 
@@ -11,13 +12,22 @@ use yii\grid\GridView ;
 /* @var $model app\models\Presentacion */
 /* @var $form yii\widgets\ActiveForm */
 /* @var  $stockData app\models\FormEpressPresentacion */
-/* @var $listArtComp yii\data\ActiveDataProvider*/
+
 
 $hayPresentacion=false;
 $cantidadActivar='true';
 $focoNumComp=false;
 $focoCodigoBarra=false;
 $focoCantidad=false;
+
+
+$listArtComp = new ActiveDataProvider([
+            'query' => \app\models\DetalleComprobante::find()->where(['idComprobante' => $stockData->numeroComprobante]),
+            'pagination' => [
+                'pageSize' => 8,
+            ],
+        ]);
+
 
 
 
@@ -167,7 +177,7 @@ if(isset($stockData->codigoProducto)){
 
             </div>
             
-         
+         <!-- llamamos a la actualizacion de stock-->
              <?php
              $form = ActiveForm::begin([
                          'id' => 'updateStock-form',
@@ -224,8 +234,8 @@ if(isset($stockData->codigoProducto)){
                         'dataProvider' => $listArtComp,
                         'columns' => [
                             'cantidad',
-                            'presentacione.descripcion',
-                            'presentacione.precioSugerido',
+                            'presentacion.descripcion',
+                            'presentacion.precioSugerido',
                         ],
                     ]);
                     ?>

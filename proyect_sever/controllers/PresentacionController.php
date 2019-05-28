@@ -11,7 +11,7 @@ use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use app\models\FormEpressPresentacion;
 use yii\filters\AccessControl;
-use yii\data\ActiveDataProvider;
+
 
 /**
  * PresentacionController implements the CRUD actions for Presentacion model.
@@ -144,13 +144,6 @@ class PresentacionController extends Controller {
         $dataProvider = Presentacion::findOne(['codigoProducto' => $stockData->codigoProducto]);
 
 
-        $listArticuloComprobante = new ActiveDataProvider([
-            'query' => \app\models\DetalleComprobante::find()->where(['idComprobante' => $stockData->numeroComprobante])->orderBy('idComprobante DESC'),
-            'pagination' => [
-                'pageSize' => 8,
-            ],
-        ]);
-
         /* if ($model->load(Yii::$app->request->post()) && $model->save()) {
           return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
           } */
@@ -158,7 +151,7 @@ class PresentacionController extends Controller {
         return $this->render('update-spress', [
                     'model' => $dataProvider,
                     'stockData' => $stockData,
-                    'listArtComp' => $listArticuloComprobante
+                  
         ]);
     }
 
@@ -179,7 +172,8 @@ class PresentacionController extends Controller {
      * @return type
      */
     public function actionUpdateStock() {
-
+        
+        //creamos un objeto de formulario stock
         $dataStock = new FormEpressPresentacion();
 
         //
@@ -194,46 +188,46 @@ class PresentacionController extends Controller {
 
         $model = Presentacion::findOne(['codigoProducto' => $dataStock->codigoProducto]);
 
-        $listArticuloComprobante = new ActiveDataProvider([
-            'query' => \app\models\DetalleComprobante::find()->where(['idComprobante' => $dataStock->numeroComprobante])->orderBy('idComprobante DESC'),
-            'pagination' => [
-                'pageSize' => 8,
-            ],
-        ]);
-
+       
         if ($model) {
             $model->updateStock($dataStock->cantidad);
-
+            $comprobante = \app\models\ComprobantesCompra::find()->where(['id' => $dataStock->numeroComprobante])->one();
+            
+            if ($comprobante) {
+                $comprobante->agregarDetalle($dataStock->cantidad, $dataStock->codigoProducto);
+            } else {
+                $comprobanteNuevo = new \app\models\ComprobantesCompra();
+                $comprobanteNuevo->fechaIngreso = date('Y-m-d');
+                $comprobanteNuevo->id = $dataStock->numeroComprobante;
+                
+                if ($comprobanteNuevo->save()) {
+                    $comprobanteNuevo->agregarDetalle($dataStock->cantidad, $dataStock->codigoProducto);
+                    echo ('Guardado...');
+                }else{
+                    echo 'Error al guardar...';
+                }
+            }
+    
             $dataStock->cantidad = 1;
             $dataStock->codigoProducto = null;
+            
             return $this->render('update-spress', [
                         'model' => null,
                         'stockData' => $dataStock,
-                        'listArtComp' => $listArticuloComprobante
+                    
             ]);
         }
 
-        /* */
-
-        //echo '<h1>PASAMOS ...'.$dataStock->codigo.'</h1>';
-        return $this->redirect(['update-spress']);
-        //crear un nuevo comprobante, si no existe y agregarle el detalle
-        $comprobante = \app\models\ComprobantesCompra::find(['id' => $dataStock->numeroComprobante])->one();
-        if ($comprobante) {
-            $comprobante->agregarDetalle($dataStock->cantidad, $dataStock->codigoProducto);
-        } else {
-            $comprobante = new \app\models\ComprobantesCompra();
-            $comprobante->fechaIngreso = date('Y-m-d');
-            if ($comprobante->save()) {
-                $comprobante->agregarDetalle($dataStock->cantidad, $dataStock->codigoProducto);
-            }
-        }
+  
         $dataStock->cantidad = null;
         $dataStock->codigoProducto = null;
         return $this->redirect(['update-spress',
                     'model' => null,
-                    'stockData' => $dataStock
+                    'stockData' => $dataStock,
+                    
         ]);
+        
+        
     }
 
     /**
