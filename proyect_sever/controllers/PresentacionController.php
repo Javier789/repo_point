@@ -191,14 +191,19 @@ class PresentacionController extends Controller {
        
         if ($model) {
             $model->updateStock($dataStock->cantidad);
+            echo '----------------- numero de comprobante '.$dataStock->numeroComprobante;
+            
             $comprobante = \app\models\ComprobantesCompra::find()->where(['id' => $dataStock->numeroComprobante])->one();
             
+            var_dump($comprobante);
             if ($comprobante) {
                 $comprobante->agregarDetalle($dataStock->cantidad, $dataStock->codigoProducto);
             } else {
                 $comprobanteNuevo = new \app\models\ComprobantesCompra();
                 $comprobanteNuevo->fechaIngreso = date('Y-m-d');
                 $comprobanteNuevo->id = $dataStock->numeroComprobante;
+                echo '---------->';
+                var_dump($comprobanteNuevo);
                 
                 if ($comprobanteNuevo->save()) {
                     $comprobanteNuevo->agregarDetalle($dataStock->cantidad, $dataStock->codigoProducto);
