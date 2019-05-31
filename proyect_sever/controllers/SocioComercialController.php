@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
  */
 class SocioComercialController extends Controller
 {
+     public $layout = 'main_dashboard';
     /**
      * {@inheritdoc}
      */
