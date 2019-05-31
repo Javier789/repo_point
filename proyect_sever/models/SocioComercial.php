@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $idSocioComercial
  * @property string $fechaIngreso
+ * @property string $razonSocial
  * @property resource $diasAtencion
  * @property string $rubro
  * @property string $direccion
@@ -34,13 +35,13 @@ class SocioComercial extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idSocioComercial', 'fechaIngreso', 'diasAtencion', 'rubro', 'localidad', 'tipoSocio', 'encargado'], 'required'],
+            [['idSocioComercial', 'fechaIngreso', 'diasAtencion', 'rubro', 'localidad', 'tipoSocio', 'encargado', 'razonSocial'], 'required'],
             [['idSocioComercial', 'encargado'], 'integer'],
             [['fechaIngreso'], 'safe'],
-            [['diasAtencion'], 'string'],
+            [['diasAtencion', 'razonSocial'], 'string'],
             [['rubro'], 'string', 'max' => 100],
             [['direccion'], 'string', 'max' => 150],
-            [['localidad', 'tipoSocio'], 'string', 'max' => 60],
+            [['localidad', 'tipoSocio', 'razonSocial'], 'string', 'max' => 60],
             [['idSocioComercial'], 'unique'],
             [['encargado'], 'exist', 'skipOnError' => true, 'targetClass' => Persona::className(), 'targetAttribute' => ['encargado' => 'nroDocumento']],
         ];
