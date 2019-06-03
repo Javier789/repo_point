@@ -219,11 +219,11 @@ $marcas = app\models\Marca::find()
                 <tr ng-repeat="d in detalles">
                     <td>{{d.nombreCategoria}}</td>
                     <td>{{d.descripcionCategoria}}</td>
-                    <td><span style="padding: 1rem 5rem;" ng-keyup="changeValueMonto(d, $event)" contenteditable="true">{{d.monto}}</span></td>
-                    <td>{{d.monto * 100 / costo | number}}%</td>
+                    <td><input type="number" style="padding: 1rem 5rem;border-style: none; background-color: transparent;" ng-keyup="changeValueMonto($index, $event)" ng-blur="guardarCategorias($index)" value="{{d.monto}}" ></input></td>
+                    <td>{{d.monto * 100 / costo| number}}% </td>
                     <td>{{d.monto + costo}}</td>
-                    <td>{{precioSugerido - (d.monto + costo)| number}}</td>
-                    <td>{{(precioSugerido - (d.monto + costo)) *100 / precioSugerido | number}}%</td>
+                    <td>{{precioSugerido - (d.monto + costo) | number}}</td>
+                    <td>{{(precioSugerido - (d.monto + costo)) * 100 / precioSugerido | number}}%</td>
                 </tr>
             </tbody>
         </table>
@@ -235,45 +235,30 @@ $marcas = app\models\Marca::find()
 
     var app = angular.module('myApp', []);
     app.controller('myCtrl', function ($scope, $http) {
-        $http.get('/index.php?r=rest-lista-precios/index&id='+<?=$model->codigoProducto ? $model->codigoProducto : 0?>)
+        $http.get('/index.php?r=rest-lista-precios/index&id=' +<?= $model->codigoProducto ? $model->codigoProducto : 0 ?>)
                 .then(function (response) {
                     $scope.detalles = response.data;
                 });
         $scope.costo = <?= $model->costo ? $model->costo : 0 ?>;
         $scope.precioSugerido = <?= $model->precioSugerido ? $model->precioSugerido : 0 ?>;
-        //$scope.cantidad = (document.getElementById('porcentajeGananciaSocio').value / 100) * $scope.precioSugerido;
-//        $scope.calculo = function (event) {
-//            var porcentajeGananciaSocio = event.target.value;
-//            $scope.cantidad = (porcentajeGananciaSocio / 100) * $scope.precioSugerido;
-//        };
-//        $scope.changeValue = function (d, event) {
-//            $scope.detalles.forEach(function (element) {
-//                if (element.idCategoria === d.idCategoria && element.idPresentacion === d.idPresentacion) {
-//                    if (event.target.textContent === "") {
-//                        element.porcentajeGananciaSocio = 0;
-//                    } else {
-//                        element.porcentajeGananciaSocio = event.target.textContent * 1;
-//                    }
-//                }
-//            });
-//        };
-        $scope.changeValueMonto = function (d, event) {
-            $scope.detalles.forEach(function (element) {
-                if (element.idCategoria === d.idCategoria && element.idPresentacion === d.idPresentacion) {
-                    console.log(event);
-                    if (event.target.textContent === "") {
-                        element.monto = 0;
-                    } else {
-                        element.monto = event.target.textContent * 1;
-                    }
-                }
-            });
+
+        $scope.changeValueMonto = function (index, event) {
+            if (event.target.value === "") {
+                $scope.detalles[index].monto = 0;
+            } else {
+                $scope.detalles[index].monto = event.target.value * 1;
+            }
         };
-        $scope.guardarCategorias = function () {
-            $http.post('http://localhost:8080/index.php?r=rest-lista-precios/save', $scope.detalles).then(
+        $scope.guardarCategorias = function (index) {
+            $http({
+                method: 'POST',
+                url: '/index.php?r=rest-lista-precios/save',
+                data: $scope.detalles[index]
+            }).then(
                     function (response) {
-                        console.log(response);
+                        console.log(response.data);
                     });
         };
+
     });
 </script>

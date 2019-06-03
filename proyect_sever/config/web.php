@@ -17,6 +17,11 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'xF7otNogGrtmbOBEDjYXEyHKsBmvDAVf',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
+            //a configuración anterior es opcional. Sin la configuración anterior, 
+            //la API sólo reconocería application/x-www-form-urlencoded y multipart/form-data como formatos de entrada.
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
