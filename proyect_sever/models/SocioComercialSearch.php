@@ -11,12 +11,14 @@ use app\models\SocioComercial;
  */
 class SocioComercialSearch extends SocioComercial
 {
+     public $txtSearch;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
+            [['razonSocial'],'string'],
             [['idSocioComercial', 'encargado'], 'integer'],
             [['fechaIngreso', 'diasAtencion', 'rubro', 'direccion', 'localidad', 'tipoSocio'], 'safe'],
         ];
@@ -68,6 +70,12 @@ class SocioComercialSearch extends SocioComercial
             ->andFilterWhere(['like', 'direccion', $this->direccion])
             ->andFilterWhere(['like', 'localidad', $this->localidad])
             ->andFilterWhere(['like', 'tipoSocio', $this->tipoSocio]);
+         $query->andFilterWhere(
+                ['or',['like','diasAtencion',$this->txtSearch],
+                    ['like','rubro',$this->txtSearch],
+                    ['like','direccion',$this->txtSearch],
+                    ['like','localidad',$this->txtSearch],
+                    ['like','tipoSocio',$this->txtSearch]]);
 
         return $dataProvider;
     }

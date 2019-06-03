@@ -7,7 +7,6 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\SocioComercial */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $encargado app\models\Persona */
-$tipoSocio=['MAY'=>'Mayorista', 'MIN'=>'Minorista']
 ?>
 
 <div class="socio-comercial-form">
@@ -59,7 +58,7 @@ $tipoSocio=['MAY'=>'Mayorista', 'MIN'=>'Minorista']
                 <div class="blockquote">
                     <div class="form-group">
                         <label for="cboxArticulo">Tipo Socio</label>
-                        <?= $form->field($model, 'tipoSocio')->dropDownList($tipoSocio, ['prompt' => '--Seleccione--'])->label(false) ?>
+                        <?= $form->field($model, 'tipoSocio')->label(false) ?>
                     </div>
                 </div>
             </div>
