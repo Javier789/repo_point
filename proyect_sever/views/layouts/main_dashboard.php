@@ -78,7 +78,7 @@ $this->title = 'Point soliciones en accesorios';
                         </a>
 
                     </li>
-                    <li class="has-subnav">
+                   <!-- <li class="has-subnav">
                         <a href="index.php?r=ruta">
                             <i class="fa fa-map-signs fa-2x"></i>
                             <span class="nav-text">
@@ -86,7 +86,7 @@ $this->title = 'Point soliciones en accesorios';
                             </span>
                         </a>
 
-                    </li>
+                    </li> -->
                     <li class="has-subnav">
                         <a href="index.php?r=socio-comercial">
                             <i class="fa fa-users fa-2x"></i>

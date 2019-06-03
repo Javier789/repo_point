@@ -235,7 +235,7 @@ $marcas = app\models\Marca::find()
 
     var app = angular.module('myApp', []);
     app.controller('myCtrl', function ($scope, $http) {
-        $http.get('http://localhost:8080/index.php?r=rest-lista-precios/index&id=5566')
+        $http.get('/index.php?r=rest-lista-precios/index&id='+<?=$model->codigoProducto ? $model->codigoProducto : 0?>)
                 .then(function (response) {
                     $scope.detalles = response.data;
                 });

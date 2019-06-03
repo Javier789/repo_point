@@ -12,7 +12,7 @@ use Yii;
  * @property string $fechaActualizacion
  * @property int $idPresentacion
  *
- * @property Presentacione $presentacion
+ * @property Presentacion $presentacion
  */
 class Stock extends \yii\db\ActiveRecord
 {
