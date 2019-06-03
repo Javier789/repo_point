@@ -140,10 +140,14 @@ class PresentacionController extends Controller {
     public function actionUpdateSpress() {
         $stockData = new FormEpressPresentacion();
         $stockData->load(Yii::$app->request->post());
+        
         $dataProvider = Presentacion::findOne(['codigoProducto' => $stockData->codigoProducto]);
         /* if ($model->load(Yii::$app->request->post()) && $model->save()) {
           return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
           } */
+        
+       
+        
         return $this->render('update-spress', [
                     'model' => $dataProvider,
                     'stockData' => $stockData,
@@ -172,6 +176,7 @@ class PresentacionController extends Controller {
         $dataStock = new FormEpressPresentacion();
         if (Yii::$app->request->post()) {
             $dataStock->load(Yii::$app->request->post());
+           
         } else {
             return $this->redirect(['update-spress',
                         'model' => null,
@@ -192,11 +197,16 @@ class PresentacionController extends Controller {
                 $comprobanteNuevo = new \app\models\ComprobantesCompra();
                 $comprobanteNuevo->fechaIngreso = date('Y-m-d');
                 $comprobanteNuevo->id = $dataStock->numeroComprobante;
+                $comprobanteNuevo->tipoComprobante=$dataStock->tipoComprobante;
+                $comprobanteNuevo->proveedor=$dataStock->proveedorComprobante;
+                
                 //echo '---------->';
                 //var_dump($comprobanteNuevo);
                 if ($comprobanteNuevo->save()) {
                     if ($comprobanteNuevo->agregarDetalle($dataStock->cantidad, $dataStock->codigoProducto)) {
                         $model->updateStock($dataStock->cantidad);
+                        $model->costo = $dataStock->costo; //Actualizar el costo
+                        $model->save();
                     }
                     //echo ('Guardado...');
                 }

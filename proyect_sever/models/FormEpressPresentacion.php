@@ -18,6 +18,9 @@ class FormEpressPresentacion extends Model {
     public $codigoProducto;
     public $cantidad;
     public $numeroComprobante;
+    public $tipoComprobante;
+    public $proveedorComprobante;
+    
     public $costo;
     
     public function rules(){
@@ -25,6 +28,8 @@ class FormEpressPresentacion extends Model {
         return [
             [['codigoProducto', 'cantidad','numeroComprobante', 'costo'], 'required'],
             [['codigoProducto', 'cantidad','numeroComprobante', 'costo'], 'number'],
+            [['tipoComprobante'], 'string', 'max' => 50],
+            [['proveedorComprobante'], 'string', 'max' => 100],
         ];
     }
     }

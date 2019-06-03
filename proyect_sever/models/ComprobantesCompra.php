@@ -24,6 +24,8 @@ class ComprobantesCompra extends \yii\db\ActiveRecord
     {
         return 'ComprobantesCompra';
     }
+    //Constante del tipo de comprobante
+    static $COMPROBANTE_TIPO=['OTRO'=>'Otro','FACTURA'=>'Factura','REMITO'=>'Remito','RECIBO'=>'Recibo'];
 
     /**
      * {@inheritdoc}
