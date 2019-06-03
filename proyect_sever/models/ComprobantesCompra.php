@@ -94,7 +94,7 @@ class ComprobantesCompra extends \yii\db\ActiveRecord
         $total = 0;
         foreach ($this->getDetallesComporbantes()->all() as $d)
         {
-            $total += $d->cantidad;
+            $total += $d->cantidad * $d->presentacion->costo;
         }
         return $total;
     }

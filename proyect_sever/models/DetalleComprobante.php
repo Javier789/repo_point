@@ -10,7 +10,7 @@ use Yii;
  * @property int $idPresentacion
  * @property double $cantidad
  * @property int $idComprobante
- *
+ * @property double $importe
  * @property ComprobantesCompra $comprobante
  * @property Presentacion $presentacione
  */

@@ -20,7 +20,7 @@ use Yii;
  * @property DetallesComporbante $detallesComporbante
  * @property Marca $marca
  * @property Producto $producto
- * @property Stock[] $stocks
+ * @property Stock $stock
  * @property DetalleCategoria $detalleCategoria
  */
 class Presentacion extends \yii\db\ActiveRecord {
@@ -96,7 +96,7 @@ class Presentacion extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getStock() {
-        return $this->hasMany(Stock::className(), ['idPresentacion' => 'codigoProducto']); //, 'idMarca' => 'idMarca'
+        return $this->hasOne(Stock::className(), ['idPresentacion' => 'codigoProducto']); //, 'idMarca' => 'idMarca'
     }
    
 
