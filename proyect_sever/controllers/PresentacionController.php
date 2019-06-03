@@ -12,7 +12,6 @@ use yii\web\UploadedFile;
 use app\models\FormEpressPresentacion;
 use yii\filters\AccessControl;
 
-
 /**
  * PresentacionController implements the CRUD actions for Presentacion model.
  */
@@ -142,16 +141,12 @@ class PresentacionController extends Controller {
         $stockData = new FormEpressPresentacion();
         $stockData->load(Yii::$app->request->post());
         $dataProvider = Presentacion::findOne(['codigoProducto' => $stockData->codigoProducto]);
-
-
         /* if ($model->load(Yii::$app->request->post()) && $model->save()) {
           return $this->redirect(['view', 'codigoProducto' => $model->codigoProducto, 'idMarca' => $model->idMarca]);
           } */
-
         return $this->render('update-spress', [
                     'model' => $dataProvider,
                     'stockData' => $stockData,
-                  
         ]);
     }
 
@@ -172,11 +167,9 @@ class PresentacionController extends Controller {
      * @return type
      */
     public function actionUpdateStock() {
-        
+
         //creamos un objeto de formulario stock
         $dataStock = new FormEpressPresentacion();
-
-        //
         if (Yii::$app->request->post()) {
             $dataStock->load(Yii::$app->request->post());
         } else {
@@ -185,54 +178,42 @@ class PresentacionController extends Controller {
                         'stockData' => $dataStock
             ]);
         }
-
         $model = Presentacion::findOne(['codigoProducto' => $dataStock->codigoProducto]);
-
-       
         if ($model) {
-            $model->updateStock($dataStock->cantidad);
-            echo '----------------- numero de comprobante '.$dataStock->numeroComprobante;
-            
+            //echo '----------------- numero de comprobante ' . $dataStock->numeroComprobante;
             $comprobante = \app\models\ComprobantesCompra::find()->where(['id' => $dataStock->numeroComprobante])->one();
-            
-            var_dump($comprobante);
             if ($comprobante) {
-                $comprobante->agregarDetalle($dataStock->cantidad, $dataStock->codigoProducto);
+                if ($comprobante->agregarDetalle($dataStock->cantidad, $dataStock->codigoProducto)) {
+                    $model->updateStock($dataStock->cantidad);
+                    $model->costo = $dataStock->costo; //Actualizar el costo
+                    $model->save();
+                }
             } else {
                 $comprobanteNuevo = new \app\models\ComprobantesCompra();
                 $comprobanteNuevo->fechaIngreso = date('Y-m-d');
                 $comprobanteNuevo->id = $dataStock->numeroComprobante;
-                echo '---------->';
-                var_dump($comprobanteNuevo);
-                
+                //echo '---------->';
+                //var_dump($comprobanteNuevo);
                 if ($comprobanteNuevo->save()) {
-                    $comprobanteNuevo->agregarDetalle($dataStock->cantidad, $dataStock->codigoProducto);
-                    echo ('Guardado...');
-                }else{
-                    echo 'Error al guardar...';
+                    if ($comprobanteNuevo->agregarDetalle($dataStock->cantidad, $dataStock->codigoProducto)) {
+                        $model->updateStock($dataStock->cantidad);
+                    }
+                    //echo ('Guardado...');
                 }
             }
-    
             $dataStock->cantidad = 1;
             $dataStock->codigoProducto = null;
-            
             return $this->render('update-spress', [
                         'model' => null,
                         'stockData' => $dataStock,
-                    
             ]);
         }
-
-  
         $dataStock->cantidad = null;
         $dataStock->codigoProducto = null;
         return $this->redirect(['update-spress',
                     'model' => null,
                     'stockData' => $dataStock,
-                    
         ]);
-        
-        
     }
 
     /**

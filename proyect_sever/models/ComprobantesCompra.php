@@ -58,7 +58,7 @@ class ComprobantesCompra extends \yii\db\ActiveRecord
      */
     public function getDetallesComporbantes()
     {
-        return $this->hasMany(DetallesComporbante::className(), ['idComprobante' => 'id']);
+        return $this->hasMany(DetalleComprobante::className(), ['idComprobante' => 'id']);
     }
 
     /**
@@ -68,13 +68,35 @@ class ComprobantesCompra extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Presentacion::className(), ['codigoProducto' => 'idPresentacion'])->viaTable('DetallesComporbante', ['idComprobante' => 'id']);
     }
-    
+    /**
+     * Agrega un detalle al comprobante actual,
+     * en caso de que ya exista un detalle para el pructo indicado
+     * se suman las cantidades.
+     * @param type $cantidadProductos
+     * @param type $codigo
+     * @return type
+     */
     public function agregarDetalle( $cantidadProductos, $codigo)
     {
+        $detalleExiste = DetalleComprobante::find()->where(['idComprobante'=> $this->id, 'idPresentacion'=> $codigo])->one();
+        if ($detalleExiste) {
+            $detalleExiste->cantidad = $detalleExiste->cantidad + $cantidadProductos;
+            return $detalleExiste->save();
+        }
         $detalle = new DetalleComprobante();
         $detalle->idComprobante = $this->id;
         $detalle->cantidad = $cantidadProductos;
         $detalle->idPresentacion = $codigo;
-        $detalle->save();
+        return $detalle->save();
     }
+    public function total()
+    {
+        $total = 0;
+        foreach ($this->getDetallesComporbantes()->all() as $d)
+        {
+            $total += $d->cantidad;
+        }
+        return $total;
+    }
+    
 }

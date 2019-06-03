@@ -18,12 +18,13 @@ class FormEpressPresentacion extends Model {
     public $codigoProducto;
     public $cantidad;
     public $numeroComprobante;
+    public $costo;
     
     public function rules(){
         {
         return [
-            [['codigoProducto', 'cantidad','numeroComprobante'], 'required'],
-            [['codigoProducto', 'cantidad','numeroComprobante'], 'number'],
+            [['codigoProducto', 'cantidad','numeroComprobante', 'costo'], 'required'],
+            [['codigoProducto', 'cantidad','numeroComprobante', 'costo'], 'number'],
         ];
     }
     }
