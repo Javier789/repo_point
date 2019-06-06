@@ -29,9 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'idCategoria',
             'nombre',
             'descripcion',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
+        'tableOptions' =>['class' => 'table table-striped table-bordered bg-light'],
     ]); ?>
 
 

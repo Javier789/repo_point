@@ -64,7 +64,7 @@ $marcas = app\models\Marca::find()
         <div class="container">
             <div class="row">
                 <div class="col-md-6" style="padding-left: 0px;">
-                    <div class="card border border-primary">
+                    <div class="card border border-primary" style="height: 100%;">
                         <div class="card-header bg-primary text-light">
                             <h3> Descripción</h3>
                         </div>
@@ -163,10 +163,11 @@ $marcas = app\models\Marca::find()
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-9">
-                            <div class="form-group">
-                                <?= Html::submitButton('GUARDAR', ['class' => 'btn btn-success', 'style' => 'font-size:1.5em', 'ng-click' => 'guardarCategorias()']) ?>
+                        <div class="row m-2">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <?= Html::submitButton('GUARDAR', ['class' => 'btn btn-success', 'style' => 'font-size:1.5em', 'ng-click' => 'guardarCategorias()']) ?>
+                                </div>
                             </div>
                         </div>
 
@@ -203,7 +204,7 @@ $marcas = app\models\Marca::find()
 
     <?php ActiveForm::end(); ?>
     <div>
-        <table class="table table-bordered table-responsive-md table-striped text-center">
+        <table class="table table-bordered table-responsive-md table-striped text-center" style="background-color: white">
             <thead>
                 <tr>
                     <th class="text-center">Categoria</th>
@@ -235,7 +236,7 @@ $marcas = app\models\Marca::find()
 
     var app = angular.module('myApp', []);
     app.controller('myCtrl', function ($scope, $http) {
-        $http.get('/index.php?r=rest-lista-precios/index&id='+<?=$model->codigoProducto ? $model->codigoProducto : 0?>)
+        $http.get('<?=Yii::$app->homeUrl?>/index.php?r=rest-lista-precios/index&id='+<?=$model->codigoProducto ? $model->codigoProducto : 0?>)
                 .then(function (response) {
                     $scope.detalles = response.data;
                 });
@@ -270,7 +271,7 @@ $marcas = app\models\Marca::find()
             });
         };
         $scope.guardarCategorias = function () {
-            $http.post('http://localhost:8080/index.php?r=rest-lista-precios/save', $scope.detalles).then(
+            $http.post('<?=Yii::$app->homeUrl?>/index.php?r=rest-lista-precios/save', $scope.detalles).then(
                     function (response) {
                         console.log(response);
                     });
