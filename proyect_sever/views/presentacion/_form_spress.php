@@ -42,7 +42,7 @@ if (isset($stockData->codigoProducto)) {
     $focoNumComp = true;
 }
 
-//echo var_dump($stockData);
+
 ?>
 
 <div class="presentacion-form">
@@ -66,14 +66,20 @@ if (isset($stockData->codigoProducto)) {
                     <div class="blockquote">
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <?= $formup->field($stockData, 'numeroComprobante')->textInput(['class' => 'form-control form-control-lg', 'autofocus' => $focoNumComp, 'onfocus' => 'this.select()', 'id' => 'txtNumeroComprobante', 'placeholder' => 'Número de Comprobante', 'style' => 'font-size:24px'])->label('Nº de Comprobante'); ?>
           <!--                      <input type="text" class="form-control form-control-lg" id="txtNumeroComprobante" placeholder="Número de Comprobante" style="font-size:24px" value ="<=Html::encode($stockData->numeroComprobante);?>">-->
+                            </div>
+                            <div class="col-md-4">
+                                <?= $formup->field($stockData, 'tipoComprobante')->dropDownList(app\models\ComprobantesCompra::$COMPROBANTE_TIPO,['style'=>'font-size:24px'])->label('Tipo comprobante'); ?>
+                            </div>
+                            <div class="col-md-4">
+                                 <?= $formup->field($stockData, 'proveedorComprobante')->textInput(['class' => 'form-control form-control-lg',  'placeholder' => 'Proveedor', 'style' => 'font-size:24px'])->label('Proveedor'); ?>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div class="input-group mb-2 mr-sm-2">
                                     <?php
                                     if (!$hayPresentacion) {
@@ -100,7 +106,7 @@ if (isset($stockData->codigoProducto)) {
 
                                 </div>
                             </div>
-                            <div class="col-md-5 text-right">
+                            <div class="col-md-4 text-right">
                                 <?php if (!$hayPresentacion) { ?>
                                     <a class="btn text-uppercase  btn-success text-center" href="index.php?r=presentacion/create" target="_blank">
                                         <h6> <i class="fa fa-plus fa-2x"></i>&nbsp;Agregar</h6>
@@ -138,8 +144,8 @@ if (isset($stockData->codigoProducto)) {
 <?php ActiveForm::end(); ?>   
 
 
-    <div class="row">
-        <div class="col-md-6" style="">
+    <div class="row ">
+        <div class="col-md-7" style="">
             <div class="card border border-primary">
                 <div class="card-header bg-primary text-light">
                     <h3 > Descripción</h3>
@@ -155,7 +161,7 @@ if (isset($stockData->codigoProducto)) {
                                 <p> <?= Html::encode($model->descripcion); ?> </p>
                                 <h5 class="py-1">Costo:$<?= Html::encode($model->costo); ?></h5>
                                 <h5 class="py-1">Precio Sugerido:$<?= Html::encode($model->precioSugerido); ?></h5>
-                                <a class="btn text-uppercase mr-3 w-25 btn-light border border-primary" href="#">
+                                <a class="btn text-uppercase mr-3 w-25 btn-light border border-primary" href="index.php?r=presentacion/update&codigoProducto=<?=$model->codigoProducto?>&idMarca=<?=$model->idMarca?>" target="_blank">
                                     <h6 class="text-primary"> <i class="fa fa-fw fa-pencil fa-2x"></i>&nbsp;Modificar</h6>
                                 </a>
                             </div>
@@ -194,6 +200,8 @@ if (isset($stockData->codigoProducto)) {
                             <?= $form->field($stockData, 'cantidad')->textInput(['class' => 'form-control-lg', 'placeholder' => '0,00', 'style' => 'font-size:24px; disabled:"' . $cantidadActivar . '"', 'disabled' => !$hayPresentacion, 'value' => '1', 'autofocus' => $focoCantidad, 'onfocus' => 'this.select()', 'onkeeyup' => 'enterCantidad(event);'])->label(false) ?>
 <?= $form->field($stockData, 'codigoProducto')->hiddenInput(['value' => $stockData->codigoProducto])->label(false); ?>
 <?= $form->field($stockData, 'numeroComprobante')->hiddenInput(['value' => $stockData->numeroComprobante])->label(false); ?>
+ <?= $form->field($stockData, 'tipoComprobante')->hiddenInput(['value' => $stockData->tipoComprobante])->label(false); ?>
+<?= $form->field($stockData, 'proveedorComprobante')->hiddenInput(['value' => $stockData->proveedorComprobante])->label(false); ?>                            
         <!--                    <input type="number" class="form-control-lg" id="numCantidad" placeholder="0,00" style="" value="1" autofocus onfocus="this.select();" onkeyup="enterCantidad(event);">-->
 
                         </div>
@@ -207,23 +215,28 @@ if (isset($stockData->codigoProducto)) {
                         </div>
                     </div>
                 </div>
-                <spam style="margin:10px;"><i class="fa fa-calculator fa-3x text-primary"></i></spam>
-                <spam style="margin:10px;">
-                    <?php
-                    if (!$hayPresentacion) {
-                        echo Html::submitButton('<i class="fa fa-save fa-2x"></i> Guardar', ['class' => 'btn btn-success', 'disabled' => !$hayPresentacion]);
-                    } else {
-                        echo Html::submitButton('<i class="fa fa-save fa-2x"></i>', ['class' => 'btn btn-success', 'onclick' => '']);
-                    }
-                    ?>
-                </spam>
+                <div class="row m-2">
+                    <div class="col-md-12 text-right py-2">
+                        <?php
+                       if (!$hayPresentacion) {
+                           echo Html::submitButton('<i class="fa fa-save fa-2x"></i> Guardar', ['class' => 'btn btn-success', 'disabled' => !$hayPresentacion]);
+                       } else {
+                           echo Html::submitButton('<i class="fa fa-save fa-2x"></i>', ['class' => 'btn btn-success', 'onclick' => '']);
+                       }
+                       ?>
+
+                    </div>
+                </div>
+                
+               
+               
 <?php ActiveForm::end(); ?>   
 
             </div>
         </div>
 
         <!-- LISTA-->
-        <div class="col-md-6" style="">
+        <div class="col-md-5" style="">
             <div class="card border border-primary" style="height:100%">
                 <div class="card-header bg-primary text-light text-center">
                     <h3 > Articulos del comprobante registrados</h3>
