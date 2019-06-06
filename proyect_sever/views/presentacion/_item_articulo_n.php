@@ -6,7 +6,7 @@ use yii\helpers\Url;
 $categorias= app\models\DetalleCategoria::find()->where(['idPresentacion'=>$model->codigoProducto])->all();
 
 ?>
-<div class="row mt-2 border-bottom border-primary" >
+<div class="row m-2 border-bottom border-primary" >
     <div class="col-md-12">
         <div class="row bg-light">
             <div class="col-md-11 flex-column p-2">

@@ -50,7 +50,7 @@ $this->title = 'Point soliciones en accesorios';
                     <?= $content ?>
                 </div>
             </div>
-            <nav class="main-menu">
+            <nav class="main-menu" id="navbar10">
                 <ul>
                     <li>
                         <a href="index.php?r=site/index">

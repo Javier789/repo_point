@@ -45,9 +45,12 @@ class SocioComercialController extends Controller
      */
     public function actionIndex()
     {
+        
         $searchModel = new SocioComercialSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+       // var_dump($searchModel);
+       // echo'<br><br><br>------------------------';
+       // var_dump($dataProvider);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
