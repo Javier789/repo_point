@@ -11,7 +11,6 @@ use Yii;
  * @property string $nombre
  * @property string $apellido
  *
- * @property SocioComercial[] $socioComercials
  */
 class Persona extends \yii\db\ActiveRecord
 {
@@ -49,11 +48,4 @@ class Persona extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSocioComercials()
-    {
-        return $this->hasMany(SocioComercial::className(), ['encargado' => 'nroDocumento']);
-    }
 }
