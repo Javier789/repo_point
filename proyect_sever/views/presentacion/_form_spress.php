@@ -67,7 +67,7 @@ if (isset($stockData->codigoProducto)) {
 
                         <div class="row">
                             <div class="col-md-4">
-                                <?= $formup->field($stockData, 'numeroComprobante')->textInput(['class' => 'form-control form-control-lg', 'autofocus' => $focoNumComp, 'onfocus' => 'this.select()', 'id' => 'txtNumeroComprobante', 'placeholder' => 'Número de Comprobante', 'style' => 'font-size:24px'])->label('Nº de Comprobante'); ?>
+                                <?= $formup->field($stockData, 'numeroComprobante')->textInput(['class' => 'form-control form-control-lg', 'autofocus' => $focoNumComp, 'onfocus' => 'this.select()', 'id' => 'txtNumeroComprobante', 'placeholder' => 'Número de Comprobante', 'style' => 'font-size:24px', 'data-mask'=>'9999-99999999'])->label('Nº de Comprobante'); ?>
           <!--                      <input type="text" class="form-control form-control-lg" id="txtNumeroComprobante" placeholder="Número de Comprobante" style="font-size:24px" value ="<=Html::encode($stockData->numeroComprobante);?>">-->
                             </div>
                             <div class="col-md-4">

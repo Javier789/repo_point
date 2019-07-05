@@ -27,9 +27,9 @@ class FormEpressPresentacion extends Model {
         {
         return [
             [['codigoProducto', 'cantidad','numeroComprobante', 'costo'], 'required'],
-            [['codigoProducto', 'cantidad','numeroComprobante', 'costo'], 'number'],
+            [['codigoProducto', 'cantidad', 'costo'], 'number'],
             [['tipoComprobante'], 'string', 'max' => 50],
-            [['proveedorComprobante'], 'string', 'max' => 100],
+            [['proveedorComprobante', 'numeroComprobante'], 'string', 'max' => 100],
         ];
     }
     }

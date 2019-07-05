@@ -7,10 +7,11 @@ use Yii;
 /**
  * This is the model class for table "ComprobantesCompra".
  *
- * @property int $id
+* @property int $id
  * @property string $tipoComprobante
  * @property string $proveedor
  * @property string $fechaIngreso
+ * @property string $nroComprobante
  *
  * @property DetallesComporbante[] $detallesComporbantes
  * @property Presentacion[] $presentacions
@@ -33,12 +34,10 @@ class ComprobantesCompra extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id'], 'integer'],
             [['fechaIngreso'], 'safe'],
+            [['nroComprobante'], 'required'],
             [['tipoComprobante'], 'string', 'max' => 50],
-            [['proveedor'], 'string', 'max' => 100],
-            [['id'], 'unique'],
+            [['proveedor', 'nroComprobante'], 'string', 'max' => 100],
         ];
     }
 

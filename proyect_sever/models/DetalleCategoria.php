@@ -10,8 +10,9 @@ use Yii;
  * @property int $idCategoria
  * @property int $idPresentacion
  * @property double $monto
- * @property Categorium $categoria
- * @property Presentacione $presentacion
+ * @property string $descripcion
+ * @property Categoria $categoria
+ * @property Presentacion $presentacion
  */
 class DetalleCategoria extends \yii\db\ActiveRecord
 {
@@ -32,6 +33,7 @@ class DetalleCategoria extends \yii\db\ActiveRecord
             [['idCategoria', 'idPresentacion'], 'required'],
             [['idCategoria', 'idPresentacion'], 'integer'],
             [['monto'], 'number'],
+            [['descripcion'], 'string', 'max' => 50],
             [['idCategoria', 'idPresentacion'], 'unique', 'targetAttribute' => ['idCategoria', 'idPresentacion']],
             [['idCategoria'], 'exist', 'skipOnError' => true, 'targetClass' => Categoria::className(), 'targetAttribute' => ['idCategoria' => 'idCategoria']],
             [['idPresentacion'], 'exist', 'skipOnError' => true, 'targetClass' => Presentacion::className(), 'targetAttribute' => ['idPresentacion' => 'codigoProducto']],
@@ -54,6 +56,7 @@ class DetalleCategoria extends \yii\db\ActiveRecord
             'idCategoria',
             'idPresentacion',
             'monto',
+            'descripcion',
             'nombreCategoria' => function (){return $this->categoria->nombre ;},
             'descripcionCategoria' => function (){return $this->categoria->descripcion ;}
         ];
